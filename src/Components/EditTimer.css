@@ -1,0 +1,15 @@
+.Edit .Edit-name {
+    min-width: 100%;
+    padding: 8px;
+    margin-top: 16px;
+}
+
+.Edit .Edit-list {
+    padding-bottom: 60px;
+}
+
+.Edit .Edit-fab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}

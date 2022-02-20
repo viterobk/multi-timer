@@ -1,0 +1,9 @@
+.TimeInterval input {
+    padding: 0 2px;
+    width: 30px;
+}
+.TimeInterval button {
+    display: inline-block;
+    padding: 0 2px;
+    width: 10px;
+}
