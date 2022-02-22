@@ -1,40 +1,53 @@
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { Component } from "react";
 import { countInterval } from "../interval";
 import './TimeInterval.css';
 
-export default class TimeInterval extends Component<{ value: number }> {
-    state: { value: number };
+export default class TimeInterval extends Component<{ value: number, onChange: (value: number) => void }> {
+    state: { min: number, sec: number };
     constructor(props) {
         super(props);
-        this.state = { value: props.value };
+        const interval = countInterval(props.value);
+        this.state = { min: interval.min, sec: interval.sec };
     }
-    changeMinutes(value: string) {
 
+    componentDidUpdate = () => {
+        this.props.onChange(this.stateToInterval(this.state))
     }
-    changeSeconds(value: string) {
 
+    stateToInterval(state: {min: number, sec: number}) {
+        return state.min * 60 + state.sec;
     }
 
     render() {
-        const interval = countInterval(this.state.value);
+        const onMinChanged = (e) => {
+            const numValue = Number.parseInt(e.target.value);
+            if (Number.isNaN(numValue) || numValue < 0 || numValue > 999) {
+                e.target.value = this.state.min;
+            } else {
+                this.setState({ min: numValue });
+            }
+        }
+        const onSecChanged = (e) => {
+            const numValue = Number.parseInt(e.target.value);
+            if (Number.isNaN(numValue) || numValue < 0 || numValue > 59) {
+                e.target.value = this.state.sec.toString();
+            } else {
+                this.setState({ sec: numValue });
+            }
+        }
         return (
             <div className="TimeInterval">
-                <TextField
-                    inputProps={{
-                        inputMode: 'numeric',
-                        pattern: '[0-9]{1,3}',
-                    }}
-                    defaultValue={interval.min}
-                    onChange={(e) => {this.changeMinutes(e.target.value)}}/>
+                <input
+                    type={'numeric'}
+                    defaultValue={this.state.min}
+                    onBlur={onMinChanged}
+                    />
                 <span> min, </span>
-                <TextField
-                    inputProps={{
-                        inputMode: 'numeric',
-                        pattern: '[0-5][0-9]',
-                    }}
-                    defaultValue={interval.sec}
-                    onChange={(e) => {this.changeMinutes(e.target.value)}}/>
+                <input
+                    type='numeric'
+                    defaultValue={this.state.sec}
+                    onBlur={onSecChanged}/>
                 <span> sec</span>
             </div>
         )

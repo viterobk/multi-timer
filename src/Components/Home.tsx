@@ -46,20 +46,16 @@ class Home extends Component {
                 )
             })
             items.push(<ListItem key={-1}>
-                <Button
-                    component={Link}
-                    to='/edit/'
-                >
+                <Button component={Link} to='/edit/'>
                     <AddIcon />
-                    <ListItemText
-                        primary={"Add timer"} />
+                    <ListItemText primary={"Add timer"} />
                 </Button>
             </ListItem>);
             return items;
         };
         return (
             <div className='Home'>
-                <TopBar />
+                <TopBar/>
                 <List className='Home-list'>
                     {generateListItems()}
                 </List>

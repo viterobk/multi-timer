@@ -1,0 +1,19 @@
+.Run .Run-runicons svg {
+    font-size: 110px;
+}
+
+.Run .Run-outerbox {
+    position: relative;
+    display: inline-flex;
+}
+
+.Run .Run-innerbox {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

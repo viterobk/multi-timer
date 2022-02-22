@@ -27,10 +27,10 @@ const deleteInterval = (timer: ITimer, index: number) => {
     return timer;
 }
 
-export default function() {
+export default function(props) {
     const { key: keyStr } = useParams();
     const key = !keyStr
-        ? timersStore.timers.length
+        ? -1
         : Number.parseInt(keyStr);
     const [timerState, setTimerState] = useState(timersStore.timers.find(timer => timer.key === key)
         || {
@@ -43,14 +43,23 @@ export default function() {
         intervals: [...timerState.intervals],
     };
 
+    const submitChanges = () => {
+        props.onUpdate && props.onUpdate(timer);
+    }
+
     const generateIntervalItems = () => {
         const intervals = timer.intervals.map((interval, index) => {
+            const updateIntervalValue = (value: number) => {
+                timer.intervals[index] = value;
+            }
             return (
                 <ListItem key={index} >
                     <ListItemButton>
-                        <TimeInterval value={interval} /></ListItemButton>
+                        <TimeInterval value={interval} onChange={updateIntervalValue}/></ListItemButton>
                     <ListItemSecondaryAction>
-                        <IconButton onClick={() => { setTimerState(deleteInterval(timer, index)) }}>
+                        <IconButton
+                            color='inherit'
+                            onClick={() => { setTimerState(deleteInterval(timer, index)) }}>
                             <DeleteIcon></DeleteIcon>
                         </IconButton>
                     </ListItemSecondaryAction>
@@ -68,7 +77,7 @@ export default function() {
     };
     return (
         <div className='Edit'>
-            <TopBar backPath='/'/>
+            <TopBar backPath='/' onOkClick={submitChanges}/>
             <TextField
                 className='Edit-name'
                 required

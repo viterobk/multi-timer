@@ -7,7 +7,7 @@ import './App.css';
 import Home from './Home';
 import EditTimer from './EditTimer';
 import RunTimer from './RunTimer';
-import TopBar from './TopBar';
+import timersStore from '../Stores/timersStore';
 
 export default () => {
   return (
@@ -15,8 +15,8 @@ export default () => {
       <Router>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/edit' element={<EditTimer />} />
-          <Route path='/edit/:key' element={<EditTimer />} />
+          <Route path='/edit' element={<EditTimer onUpdate={timersStore.update} />} />
+          <Route path='/edit/:key' element={<EditTimer onUpdate={timersStore.update} />} />
           <Route path='/run/:key' element={<RunTimer />} />
         </Routes>
       </Router>

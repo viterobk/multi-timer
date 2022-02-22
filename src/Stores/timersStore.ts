@@ -2,57 +2,21 @@ import { action, observable } from 'mobx';
 import { ITimer } from '../Components/interfaces';
 
 const saveTimers = (timers: ITimer[]): void => {
-    console.log('Saving timers');
+    localStorage.setItem('timers', JSON.stringify(timers));
 }
 
 const loadTimers = (): ITimer[] => {
-    console.log('Loading timers');
-    return [
-        {
-            key: 0,
-            name: "Объемное восприятие",
-            intervals: [60, 60, 60, 180, 180, 180],
-        }, {
-            key: 1,
-            name: "Коррекция органа",
-            intervals: [30, 30, 30],
-        }, {
-            key: 2,
-            name: "Коррекция зрения",
-            intervals: [30, 10, 30, 10, 30],
-        },{
-            key: 3,
-            name: "Объемное восприятие",
-            intervals: [60, 60, 60, 180, 180, 180],
-        }, {
-            key: 4,
-            name: "Коррекция органа",
-            intervals: [30, 30, 30],
-        }, {
-            key: 5,
-            name: "Коррекция зрения",
-            intervals: [30, 10, 30, 10, 30],
-        },{
-            key: 6,
-            name: "Объемное восприятие",
-            intervals: [60, 60, 60, 180, 180, 180],
-        }, {
-            key: 7,
-            name: "Коррекция органа",
-            intervals: [30, 30, 30],
-        }, {
-            key: 8,
-            name: "Коррекция зрения",
-            intervals: [30, 10, 30, 10, 30],
-        }
-    ];
+    const timersJson = localStorage.getItem('timers');
+    if(!timersJson) return [];
+    const timers = JSON.parse(timersJson);
+    return timers;
 }
 
 class TimersStore {
     timers: ITimer[] = observable(loadTimers());
 
     update = action((timer: ITimer) => {
-        if (!timer.key) {
+        if (timer.key < 0) {
             this.timers.push({
                 ...timer,
                 key: this.timers.length,
