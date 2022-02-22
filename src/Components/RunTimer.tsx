@@ -14,8 +14,6 @@ import TopBar from './TopBar';
 import { Box } from '@mui/system';
 import Timer, { IProgressArgs, ITimerArgs } from '../Timer';
 import { intervalToString } from '../interval';
-import { beep } from '../beeper';
-import emptyVideo from '../Video/video'
 
 export default function() {
     const { key: keyStr } = useParams();
@@ -48,12 +46,8 @@ export default function() {
                     setRunning(e.target.getIsRunning());
                 },
                 onFinished: (e: IProgressArgs) => {
-                    beep(3);
                     setRunState(e);
                     setRunning(e.target.getIsRunning());
-                },
-                onIntervalFinished(e) {
-                    beep();
                 }
             }
         )
@@ -113,9 +107,6 @@ export default function() {
             <Typography variant='h3'>{runState.text}</Typography>
             <Typography variant='h6'>{runState.restIntervals} intervals left</Typography>
             {renderResetButton()}
-            <video loop style={{position:'fixed'}} autoPlay muted>
-                <source src={emptyVideo}/>
-            </video>
         </div>
     )
 }

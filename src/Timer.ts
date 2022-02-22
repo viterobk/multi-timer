@@ -1,3 +1,4 @@
+import { beep } from "./beeper";
 import { intervalToString } from "./interval";
 
 export interface ITimerArgs {
@@ -76,12 +77,14 @@ export default class Timer {
         });
 
         if (secondsLeft <= 0) {
+            beep(3);
             this.reset();
             return;
         }
         if (intervalLeft <= 0) {
             this.currentInterval = this.intervalQueue.shift() || 0
             this.totalInterval += this.currentInterval;
+            beep();
             this.onIntervalFinished && this.onIntervalFinished({ target: this })
         }
     }
