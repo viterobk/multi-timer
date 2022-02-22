@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/multi-timer.github.io/static/css/main.ce764c0f.css",
+    "main.js": "/multi-timer.github.io/static/js/main.5f43e29e.js",
+    "static/js/787.7f40511b.chunk.js": "/multi-timer.github.io/static/js/787.7f40511b.chunk.js",
+    "index.html": "/multi-timer.github.io/index.html",
+    "main.ce764c0f.css.map": "/multi-timer.github.io/static/css/main.ce764c0f.css.map",
+    "main.5f43e29e.js.map": "/multi-timer.github.io/static/js/main.5f43e29e.js.map",
+    "787.7f40511b.chunk.js.map": "/multi-timer.github.io/static/js/787.7f40511b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ce764c0f.css",
+    "static/js/main.5f43e29e.js"
+  ]
+}
