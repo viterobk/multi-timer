@@ -15,6 +15,7 @@ import { Box } from '@mui/system';
 import Timer, { IProgressArgs, ITimerArgs } from '../Timer';
 import { intervalToString } from '../interval';
 import { beep } from '../beeper';
+import emptyVideo from '../Video/video'
 
 export default function() {
     const { key: keyStr } = useParams();
@@ -112,6 +113,9 @@ export default function() {
             <Typography variant='h3'>{runState.text}</Typography>
             <Typography variant='h6'>{runState.restIntervals} intervals left</Typography>
             {renderResetButton()}
+            <video loop style={{position:'fixed'}}>
+                <source src={emptyVideo}/>
+            </video>
         </div>
     )
 }
