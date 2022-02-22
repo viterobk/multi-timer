@@ -75,11 +75,11 @@ export default class Timer {
             target: this,
         });
 
-        if (secondsLeft === 0) {
+        if (secondsLeft <= 0) {
             this.reset();
             return;
         }
-        if (intervalLeft === 0) {
+        if (intervalLeft <= 0) {
             this.currentInterval = this.intervalQueue.shift() || 0
             this.totalInterval += this.currentInterval;
             this.onIntervalFinished && this.onIntervalFinished({ target: this })
