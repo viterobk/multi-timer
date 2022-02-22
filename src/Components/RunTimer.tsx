@@ -18,7 +18,7 @@ import './RunTimer.css';
 import { useState } from 'react';
 import TopBar from './TopBar';
 import { Box } from '@mui/system';
-import Timer from '../Timer';
+import Timer, { IProgressArgs, ITimerArgs } from '../Timer';
 import { intervalToString } from '../interval';
 
 export default function() {
@@ -29,28 +29,64 @@ export default function() {
     const timer = timersStore.timers.find(timer => timer.key === key);
     if (!timer) throw Error("Timer is empty");
 
+    const [isRunning, setRunning] = useState(false);
+
     const [runState, setRunState] = useState({
         intervalPercent: 100, 
         totalPercent: 100,
         text: intervalToString(timer.intervals.reduce((i, s) => s += i,0)),
+        restIntervals: timer.intervals.length,
     });
     const [timerState, updateTimerState] = useState({
         timerRunner: new Timer(
             timer.intervals,
             {
-                onProgress: (intervalPercent, totalPercent, text) => {
+                onProgress: (e: IProgressArgs) => {
                     //console.log(`${totalPercent}, ${intervalPercent}`);
-                    setRunState({
-                        intervalPercent,
-                        totalPercent,
-                        text,
-                    });
+                    setRunState(e);
+                },
+                onStarted: (e: ITimerArgs) => {
+                    setRunning(e.target.getIsRunning());
+                },
+                onPaused: (e: ITimerArgs) => {
+                    setRunning(e.target.getIsRunning());
+                },
+                onFinished: (e: IProgressArgs) => {
+                    setRunState(e);
+                    setRunning(e.target.getIsRunning());
                 }
             }
         )
     })
     const startTimer = () => {
         timerState.timerRunner.start();
+    }
+    const pauseTimer = () => {
+        timerState.timerRunner.pause();
+    }
+    const resetTimer = () => {
+        timerState.timerRunner.reset();
+    }
+
+    const generateCenterButton = () => {
+        if (isRunning) {
+            return (
+                <IconButton className='Run-runicons' onClick={pauseTimer}>
+                    <PauseIcon style={{color: '#AA0000'}}/>
+                </IconButton>
+            );
+        }
+        return (
+            <IconButton className='Run-runicons' onClick={startTimer}>
+                <PlayArrowIcon style={{color: '#00AA00'}}/>
+            </IconButton>
+        );
+    }
+    const renderResetButton = () => {
+        if(!isRunning && runState.totalPercent < 100) {
+            return (<Button onClick={resetTimer}>Reset</Button>)
+        }
+        return;
     }
 
     return (
@@ -71,12 +107,12 @@ export default function() {
                     />
                 </Box>
                 <Box className='Run-innerbox'>
-                    <IconButton className='Run-runicons' onClick={startTimer}>
-                        <PlayArrowIcon style={{color: '#00AA00'}}/>
-                    </IconButton>
+                    {generateCenterButton()}
                 </Box>
             </Box>
             <Typography variant='h3'>{runState.text}</Typography>
+            <Typography variant='h6'>{runState.restIntervals} intervals left</Typography>
+            {renderResetButton()}
         </div>
     )
 }
