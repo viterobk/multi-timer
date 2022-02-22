@@ -2,7 +2,7 @@
   "name": "multi-timer",
   "version": "0.1.0",
   "private": false,
-  "homepage": "https://viterobk.github.io/multi-timer/",
+  "homepage": "https://viterobk.github.io/multi-timer",
   "dependencies": {
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
