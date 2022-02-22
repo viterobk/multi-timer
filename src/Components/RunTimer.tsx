@@ -36,7 +36,6 @@ export default function() {
             timer.intervals,
             {
                 onProgress: (e: IProgressArgs) => {
-                    //console.log(`${totalPercent}, ${intervalPercent}`);
                     setRunState(e);
                 },
                 onStarted: (e: ITimerArgs) => {

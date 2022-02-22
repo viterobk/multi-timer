@@ -113,7 +113,7 @@ export default class Timer {
         this.seconds = 0;
         this.isRunning = false;
         this.runDuration = 0;
-        this.intervalQueue = this.intervals;
+        this.intervalQueue = [...this.intervals];
         this.totalInterval = 0;
         this.onFinished && this.onFinished({
             intervalPercent: 100,
