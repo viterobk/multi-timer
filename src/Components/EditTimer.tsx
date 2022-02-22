@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import timersStore from "../Stores/timersStore";
 import './EditTimer.css';
 import { useState } from 'react';

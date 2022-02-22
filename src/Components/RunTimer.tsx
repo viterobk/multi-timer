@@ -2,17 +2,11 @@ import {
     CircularProgress,
     Button,
     IconButton,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemSecondaryAction,
-    ListItemText,
     Typography,
 } from '@mui/material';
-import StopIcon from '@mui/icons-material/Stop';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import timersStore from "../Stores/timersStore";
 import './RunTimer.css';
 import { useState } from 'react';
