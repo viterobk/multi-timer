@@ -113,7 +113,7 @@ export default function() {
             <Typography variant='h3'>{runState.text}</Typography>
             <Typography variant='h6'>{runState.restIntervals} intervals left</Typography>
             {renderResetButton()}
-            <video loop style={{position:'fixed'}} autoPlay>
+            <video loop style={{position:'fixed'}} autoPlay muted>
                 <source src={emptyVideo}/>
             </video>
         </div>
