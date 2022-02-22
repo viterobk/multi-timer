@@ -2,6 +2,7 @@
   "name": "multi-timer",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://viterobk.github.io/multi-timer.github.io/",
   "dependencies": {
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
@@ -16,6 +17,7 @@
     "@types/react": "^17.0.20",
     "@types/react-dom": "^17.0.9",
     "@types/react-router-dom": "^5.3.3",
+    "gh-pages": "^3.2.3",
     "history": "^5.2.0",
     "mobx": "^6.4.0",
     "mobx-react": "^7.3.0",
@@ -28,6 +30,8 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
