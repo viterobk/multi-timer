@@ -20,6 +20,7 @@ import TopBar from './TopBar';
 import { Box } from '@mui/system';
 import Timer, { IProgressArgs, ITimerArgs } from '../Timer';
 import { intervalToString } from '../interval';
+import { beep, doubleBeep } from '../beeper';
 
 export default function() {
     const { key: keyStr } = useParams();
@@ -52,8 +53,12 @@ export default function() {
                     setRunning(e.target.getIsRunning());
                 },
                 onFinished: (e: IProgressArgs) => {
+                    doubleBeep();
                     setRunState(e);
                     setRunning(e.target.getIsRunning());
+                },
+                onIntervalFinished(e) {
+                    beep();
                 }
             }
         )
