@@ -16,6 +16,7 @@ import Timer, { ITimerArgs } from '../Timer';
 import { intervalToString } from '../interval';
 import { useEffect } from 'react';
 import { refStructEnhancer } from 'mobx/dist/internal';
+import { activateKeepAwake, deactivateKeepAwake, useKeepAwake } from 'expo-keep-awake';
 
 export default function() {
     const { key: keyStr } = useParams();
@@ -35,12 +36,15 @@ export default function() {
                     updateRunState(e.target);
                 },
                 onStarted: (e: ITimerArgs) => {
+                    activateKeepAwake();
                     setRunning(e.target.getIsRunning());
                 },
                 onPaused: (e: ITimerArgs) => {
+                    deactivateKeepAwake();
                     setRunning(e.target.getIsRunning());
                 },
                 onFinished: (e: ITimerArgs) => {
+                    deactivateKeepAwake();
                     updateRunState(e.target);
                     setRunning(e.target.getIsRunning());
                 }
