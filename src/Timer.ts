@@ -2,7 +2,8 @@ import { beep } from "./beeper";
 import { intervalToString } from "./interval";
 
 const invokeEvent = (handler: Function | undefined, args: unknown, invokeWhenHidden: boolean = false) => {
-    if(!handler || (document.hidden && !invokeWhenHidden)) return;
+    console.log(document.visibilityState)
+    if(!handler || (document.hidden && invokeWhenHidden)) return;
 
     setTimeout(() => {
         handler(args);
