@@ -13,10 +13,10 @@ import { useState } from 'react';
 import TopBar from './TopBar';
 import { Box } from '@mui/system';
 import Timer, { ITimerArgs } from '../Timer';
-import { intervalToString } from '../interval';
 import { useEffect } from 'react';
-import { refStructEnhancer } from 'mobx/dist/internal';
-import { activateKeepAwake, deactivateKeepAwake, useKeepAwake } from 'expo-keep-awake';
+import NoSleep from 'nosleep.js';
+
+const noSleep = new NoSleep();
 
 export default function() {
     const { key: keyStr } = useParams();
@@ -36,15 +36,12 @@ export default function() {
                     updateRunState(e.target);
                 },
                 onStarted: (e: ITimerArgs) => {
-                    activateKeepAwake();
                     setRunning(e.target.getIsRunning());
                 },
                 onPaused: (e: ITimerArgs) => {
-                    deactivateKeepAwake();
                     setRunning(e.target.getIsRunning());
                 },
                 onFinished: (e: ITimerArgs) => {
-                    deactivateKeepAwake();
                     updateRunState(e.target);
                     setRunning(e.target.getIsRunning());
                 }
@@ -68,12 +65,15 @@ export default function() {
         })
     }
     const startTimer = () => {
+        noSleep.enable();
         timerState.timerRunner.start();
     }
     const pauseTimer = () => {
+        noSleep.disable();
         timerState.timerRunner.pause();
     }
     const resetTimer = () => {
+        noSleep.disable();
         timerState.timerRunner.reset();
     }
 
