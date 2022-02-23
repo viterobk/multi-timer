@@ -65,7 +65,11 @@ export default function() {
         })
     }
     const startTimer = () => {
-        noSleep.enable();
+        const noSleep = new NoSleep();
+        document.addEventListener('click', function enableNoSleep() {
+            noSleep.enable();
+            document.removeEventListener('click', enableNoSleep, false);
+        }, false)
         timerState.timerRunner.start();
     }
     const pauseTimer = () => {
