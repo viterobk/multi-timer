@@ -1,8 +1,8 @@
 import { beep } from "./beeper";
 import { intervalToString } from "./interval";
 
-const invokeEvent = (handler: Function | undefined, args: unknown) => {
-    if(!handler) return;
+const invokeEvent = (handler: Function | undefined, args: unknown, invokeWhenHidden: boolean = false) => {
+    if(!handler || (document.hidden && !invokeWhenHidden)) return;
 
     setTimeout(() => {
         handler(args);
@@ -129,7 +129,7 @@ export default class Timer {
             text: intervalToString(this.totalSeconds),
             restIntervals: this.intervals.length,
             target: this,
-        });
+        }, true);
     }
 
     getIsRunning() {
