@@ -79,6 +79,7 @@ export default function(props) {
         <div className='Edit'>
             <TopBar backPath='/' onOkClick={submitChanges}/>
             <TextField
+                autoFocus
                 className='Edit-name'
                 required
                 label='Timer name'

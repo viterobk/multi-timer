@@ -12,8 +12,10 @@ import './RunTimer.css';
 import { useState } from 'react';
 import TopBar from './TopBar';
 import { Box } from '@mui/system';
-import Timer, { IProgressArgs, ITimerArgs } from '../Timer';
+import Timer, { ITimerArgs } from '../Timer';
 import { intervalToString } from '../interval';
+import { useEffect } from 'react';
+import { refStructEnhancer } from 'mobx/dist/internal';
 
 export default function() {
     const { key: keyStr } = useParams();
@@ -25,18 +27,12 @@ export default function() {
 
     const [isRunning, setRunning] = useState(false);
 
-    const [runState, setRunState] = useState({
-        intervalPercent: 100, 
-        totalPercent: 100,
-        text: intervalToString(timer.intervals.reduce((i, s) => s += i,0)),
-        restIntervals: timer.intervals.length,
-    });
     const [timerState, updateTimerState] = useState({
         timerRunner: new Timer(
             timer.intervals,
             {
-                onProgress: (e: IProgressArgs) => {
-                    setRunState(e);
+                onProgress: (e: ITimerArgs) => {
+                    updateRunState(e.target);
                 },
                 onStarted: (e: ITimerArgs) => {
                     setRunning(e.target.getIsRunning());
@@ -44,13 +40,29 @@ export default function() {
                 onPaused: (e: ITimerArgs) => {
                     setRunning(e.target.getIsRunning());
                 },
-                onFinished: (e: IProgressArgs) => {
-                    setRunState(e);
+                onFinished: (e: ITimerArgs) => {
+                    updateRunState(e.target);
                     setRunning(e.target.getIsRunning());
                 }
             }
         )
     })
+    
+    const [runState, setRunState] = useState({
+        intervalPercent: timerState.timerRunner.getIntervalPercent(), 
+        totalPercent: timerState.timerRunner.getTotalPercent(),
+        text: timerState.timerRunner.getText(),
+        restIntervals: timerState.timerRunner.getRestIntervals(),
+    });
+
+    const updateRunState = (timerInstance: Timer) => {
+        setRunState({
+            intervalPercent: timerInstance.getIntervalPercent(), 
+            totalPercent: timerInstance.getTotalPercent(),
+            text: timerInstance.getText(),
+            restIntervals: timerInstance.getRestIntervals(),
+        })
+    }
     const startTimer = () => {
         timerState.timerRunner.start();
     }
@@ -81,6 +93,10 @@ export default function() {
         }
         return;
     }
+
+    useEffect(() => () => {
+        if (timerState.timerRunner.getIsRunning()) resetTimer()
+    }, [])
 
     return (
         <div className='Run'>

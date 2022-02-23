@@ -13,17 +13,10 @@ export interface ITimerArgs {
     target: Timer
 }
 
-export interface IProgressArgs extends ITimerArgs{
-    totalPercent: number;
-    intervalPercent: number;
-    text: string;
-    restIntervals: number;
-}
-
 export default class Timer {
-    private onProgress?: (e: IProgressArgs) => void;
+    private onProgress?: (e: ITimerArgs) => void;
     private onIntervalFinished?: (e: ITimerArgs) => void;
-    private onFinished?: (e: IProgressArgs) => void;
+    private onFinished?: (e: ITimerArgs) => void;
     private onStarted?: (e: ITimerArgs) => void;
     private onPaused?: (e: ITimerArgs) => void;
 
@@ -32,31 +25,56 @@ export default class Timer {
     private isRunning: boolean = false;
     private intervals: number[];
     private intervalQueue: number[];
-    private currentInterval: number = -1;
-    private totalInterval: number = -1;
+    private currentInterval: number = 0;
+    private totalInterval: number = 0;
     private startTime: number = 0;
     private runDuration: number = 0;
-    private seconds: number = 0;
+    private prevSeconds: number = 0;
     private totalSeconds: number;
     
     constructor(
         intervals: number[],
         handlers: {
-            onProgress?: ((e: IProgressArgs) => void),
+            onProgress?: ((e: ITimerArgs) => void),
             onIntervalFinished?: ((e: ITimerArgs) => void),
-            onFinished?: ((e: IProgressArgs) => void),
+            onFinished?: ((e: ITimerArgs) => void),
             onStarted?: ((e: ITimerArgs) => void),
             onPaused?: ((e: ITimerArgs) => void),
         } = {}
     ) {
         this.intervals = intervals;
         this.intervalQueue = [...this.intervals];
+        this.startTime = new Date().getTime();
         this.onProgress = handlers.onProgress;
         this.onIntervalFinished = handlers.onIntervalFinished;
         this.onFinished = handlers.onFinished;
         this.onStarted = handlers.onStarted;
         this.onPaused = handlers.onPaused;
         this.totalSeconds = intervals.reduce((i, sum) => sum += i, 0);
+        this.shiftIntervalQueue();
+    }
+
+    getTotalPercent(): number {
+        return this.getSecondsLeft() / this.totalSeconds * 100;
+    };
+    getIntervalSecondsLeft(): number {
+        return this.totalInterval - this.getSeconds();
+    }
+    getIntervalPercent(): number {
+        return this.getIntervalSecondsLeft() / this.currentInterval * 100;
+    };
+    getRestIntervals(): number {
+        return this.intervalQueue.length + 1;
+    };
+    getSeconds(): number {
+        const currentDuration = new Date().getTime() - this.startTime + this.runDuration;
+        return Math.floor(currentDuration / 1000);
+    }
+    getSecondsLeft(): number {
+        return this.totalSeconds - this.getSeconds();
+    };
+    getText(): string {
+        return intervalToString(this.getSecondsLeft());
     }
 
     checkInterval = () => {
@@ -64,45 +82,33 @@ export default class Timer {
             clearInterval(this.timerInterval);
         }
 
-        const currentDuration = new Date().getTime() - this.startTime + this.runDuration;
-        const seconds = Math.floor(currentDuration / 1000);
-        if (this.seconds >= seconds) {
+        const seconds = this.getSeconds();
+        if (this.prevSeconds >= seconds) {
             return;
         }
 
-        this.seconds = seconds;
-        const secondsLeft = this.totalSeconds - seconds;
-        const intervalLeft = this.totalInterval - seconds;
-        const totalPercent = secondsLeft / this.totalSeconds * 100;
-        const intervalPercent = intervalLeft / this.currentInterval * 100;
+        this.prevSeconds = seconds;
+        const secondsLeft = this.getSecondsLeft();
+        const intervalSecondsLeft = this.getIntervalSecondsLeft();
 
-        invokeEvent(this.onProgress, {
-            intervalPercent,
-            totalPercent,
-            text: intervalToString(secondsLeft),
-            restIntervals: this.intervalQueue.length + 1,
-            target: this,
-        });
+        invokeEvent(this.onProgress, { target: this });
 
         if (secondsLeft <= 0) {
             beep(3);
             this.reset();
             return;
         }
-        if (intervalLeft <= 0) {
+        if (intervalSecondsLeft <= 0) {
             this.currentInterval = this.intervalQueue.shift() || 0
             this.totalInterval += this.currentInterval;
             beep();
+            console.log("Interval finished");
             invokeEvent(this.onIntervalFinished, { target: this });
         }
     }
 
     start() {
         if (this.isRunning) return;
-        if (!this.runDuration) {
-            this.currentInterval = this.intervalQueue.shift() || -1;
-            this.totalInterval = this.currentInterval;
-        }
         this.timerInterval = setInterval(this.checkInterval, 50);
         this.startTime = new Date().getTime();
         this.isRunning = true;
@@ -118,21 +124,22 @@ export default class Timer {
 
     reset() {
         clearInterval(this.timerInterval);
-        this.seconds = 0;
+        this.prevSeconds = 0;
         this.isRunning = false;
         this.runDuration = 0;
         this.intervalQueue = [...this.intervals];
         this.totalInterval = 0;
-        invokeEvent(this.onFinished, {
-            intervalPercent: 100,
-            totalPercent: 100,
-            text: intervalToString(this.totalSeconds),
-            restIntervals: this.intervals.length,
-            target: this,
-        }, true);
+        this.shiftIntervalQueue();
+        this.startTime = new Date().getTime();
+        invokeEvent(this.onFinished, { target: this }, true);
     }
 
     getIsRunning() {
         return this.isRunning;
+    }
+
+    private shiftIntervalQueue() {
+        this.currentInterval = this.intervalQueue.shift() || 0
+        this.totalInterval += this.currentInterval;
     }
 }

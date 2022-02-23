@@ -42,12 +42,15 @@ export default class TimeInterval extends Component<{ value: number, onChange: (
                     type={'numeric'}
                     defaultValue={this.state.min}
                     onBlur={onMinChanged}
-                    />
+                    onFocus={(e) => {e.target.select()}}
+                />
                 <span> min, </span>
                 <input
                     type='numeric'
                     defaultValue={this.state.sec}
-                    onBlur={onSecChanged}/>
+                    onBlur={onSecChanged}
+                    onFocus={(e) => {e.target.select()}}
+                />
                 <span> sec</span>
             </div>
         )
