@@ -68,13 +68,13 @@ export default class Timer {
         const totalPercent = secondsLeft / this.totalSeconds * 100;
         const intervalPercent = intervalLeft / this.currentInterval * 100;
 
-        this.onProgress && this.onProgress({
+        this.onProgress && Promise.resolve(this.onProgress({
             intervalPercent,
             totalPercent,
             text: intervalToString(secondsLeft),
             restIntervals: this.intervalQueue.length + 1,
             target: this,
-        });
+        }));
 
         if (secondsLeft <= 0) {
             beep(3);
@@ -85,7 +85,7 @@ export default class Timer {
             this.currentInterval = this.intervalQueue.shift() || 0
             this.totalInterval += this.currentInterval;
             beep();
-            this.onIntervalFinished && this.onIntervalFinished({ target: this })
+            this.onIntervalFinished && Promise.resolve(this.onIntervalFinished({ target: this }))
         }
     }
 
@@ -98,14 +98,14 @@ export default class Timer {
         this.timerInterval = setInterval(this.checkInterval, 50);
         this.startTime = new Date().getTime();
         this.isRunning = true;
-        this.onStarted && this.onStarted({ target: this });
+        this.onStarted && Promise.resolve(this.onStarted({ target: this }));
     }
 
     pause() {
         clearInterval(this.timerInterval);
         this.runDuration += new Date().getTime() - this.startTime;
         this.isRunning = false;
-        this.onPaused && this.onPaused({ target: this });
+        this.onPaused && Promise.resolve(this.onPaused({ target: this }));
     }
 
     reset() {
@@ -115,13 +115,13 @@ export default class Timer {
         this.runDuration = 0;
         this.intervalQueue = [...this.intervals];
         this.totalInterval = 0;
-        this.onFinished && this.onFinished({
+        this.onFinished && Promise.resolve(this.onFinished({
             intervalPercent: 100,
             totalPercent: 100,
             text: intervalToString(this.totalSeconds),
             restIntervals: this.intervals.length,
             target: this,
-        });
+        }));
     }
 
     getIsRunning() {
