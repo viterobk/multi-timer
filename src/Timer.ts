@@ -1,13 +1,8 @@
 import { beep } from "./beeper";
 import { intervalToString } from "./interval";
 
-const invokeEvent = (handler: Function | undefined, args: unknown, invokeWhenHidden: boolean = false) => {
-    console.log(document.visibilityState)
-    if(!handler || (document.hidden && invokeWhenHidden)) return;
-
-    setTimeout(() => {
-        handler(args);
-    }, 0);
+const invokeEvent = (handler: Function | undefined, args: unknown) => {
+    handler && handler(args);
 }
 
 export interface ITimerArgs {
@@ -103,7 +98,6 @@ export default class Timer {
             this.currentInterval = this.intervalQueue.shift() || 0
             this.totalInterval += this.currentInterval;
             beep();
-            console.log("Interval finished");
             invokeEvent(this.onIntervalFinished, { target: this });
         }
     }
@@ -132,7 +126,7 @@ export default class Timer {
         this.totalInterval = 0;
         this.shiftIntervalQueue();
         this.startTime = new Date().getTime();
-        invokeEvent(this.onFinished, { target: this }, true);
+        invokeEvent(this.onFinished, { target: this });
     }
 
     getIsRunning() {

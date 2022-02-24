@@ -9,16 +9,17 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { useParams } from "react-router-dom";
 import timersStore from "../Stores/timersStore";
 import './RunTimer.css';
-import { useState } from 'react';
+import { createRef, useRef, useState } from 'react';
 import TopBar from './TopBar';
 import { Box } from '@mui/system';
 import Timer, { ITimerArgs } from '../Timer';
 import { useEffect } from 'react';
-import NoSleep from 'nosleep.js';
-
-const noSleep = new NoSleep();
+import base64video from '../video';
 
 export default function() {
+    const myRef = createRef<HTMLVideoElement>();
+    let currentVideoElement: HTMLVideoElement | null;
+
     const { key: keyStr } = useParams();
     if (!keyStr) throw Error("Timer key is empty");
 
@@ -42,6 +43,7 @@ export default function() {
                     setRunning(e.target.getIsRunning());
                 },
                 onFinished: (e: ITimerArgs) => {
+                    pauseVideo();
                     updateRunState(e.target);
                     setRunning(e.target.getIsRunning());
                 }
@@ -49,6 +51,13 @@ export default function() {
         )
     })
     
+    const startVideo = () => {
+        currentVideoElement = myRef.current;
+        myRef.current?.play();
+    }
+    const pauseVideo = () => {
+        currentVideoElement?.pause();
+    }
     const [runState, setRunState] = useState({
         intervalPercent: timerState.timerRunner.getIntervalPercent(), 
         totalPercent: timerState.timerRunner.getTotalPercent(),
@@ -65,19 +74,15 @@ export default function() {
         })
     }
     const startTimer = () => {
-        const noSleep = new NoSleep();
-        document.addEventListener('click', function enableNoSleep() {
-            noSleep.enable();
-            document.removeEventListener('click', enableNoSleep, false);
-        }, false)
+        startVideo();
         timerState.timerRunner.start();
     }
     const pauseTimer = () => {
-        noSleep.disable();
+        pauseVideo();
         timerState.timerRunner.pause();
     }
     const resetTimer = () => {
-        noSleep.disable();
+        pauseVideo()
         timerState.timerRunner.reset();
     }
 
@@ -130,6 +135,7 @@ export default function() {
             <Typography variant='h3'>{runState.text}</Typography>
             <Typography variant='h6'>{runState.restIntervals} intervals left</Typography>
             {renderResetButton()}
+            <video ref={myRef} src={base64video} loop/>
         </div>
     )
 }
