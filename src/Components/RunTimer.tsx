@@ -15,10 +15,13 @@ import { Box } from '@mui/system';
 import Timer, { ITimerArgs } from '../Timer';
 import { useEffect } from 'react';
 import base64video from '../video';
+import { beep1 as base64beep } from '../Sounds';
 
 export default function() {
     const myRef = createRef<HTMLVideoElement>();
+    const beepRef = createRef<HTMLAudioElement>();
     let currentVideoElement: HTMLVideoElement | null;
+    let currentAudioElement: HTMLAudioElement | null;
 
     const { key: keyStr } = useParams();
     if (!keyStr) throw Error("Timer key is empty");
@@ -43,6 +46,15 @@ export default function() {
                     setRunning(e.target.getIsRunning());
                 },
                 onFinished: (e: ITimerArgs) => {
+                    playBeep(3);
+                    pauseVideo();
+                    updateRunState(e.target);
+                    setRunning(e.target.getIsRunning());
+                },
+                onIntervalFinished: (e: ITimerArgs) => {
+                    playBeep();
+                },
+                onReset: (e: ITimerArgs) => {
                     pauseVideo();
                     updateRunState(e.target);
                     setRunning(e.target.getIsRunning());
@@ -51,8 +63,31 @@ export default function() {
         )
     })
     
+    const playBeep = (repetitions: number = 1) => {
+        if (!currentAudioElement) {
+            return;
+        }
+        let count = 0;
+        currentAudioElement.onended = (e) => {
+            count += 1;
+
+            if(!currentAudioElement || count >= repetitions) return;
+            
+            currentAudioElement.currentTime = 0;
+            currentAudioElement.play();
+        }
+        currentAudioElement.play();
+    }
+    const createMediaInstances = () => {
+        if (!currentVideoElement) {
+            currentVideoElement = myRef.current;
+        }
+        if (!currentAudioElement) {
+            currentAudioElement = beepRef.current;
+        }
+    }
     const startVideo = () => {
-        currentVideoElement = myRef.current;
+        createMediaInstances();
         myRef.current?.play();
     }
     const pauseVideo = () => {
@@ -136,6 +171,7 @@ export default function() {
             <Typography variant='h6'>{runState.restIntervals} intervals left</Typography>
             {renderResetButton()}
             <video ref={myRef} src={base64video} loop/>
+            <audio ref={beepRef} src={base64beep} />
         </div>
     )
 }

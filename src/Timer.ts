@@ -1,4 +1,3 @@
-import { beep } from "./beeper";
 import { intervalToString } from "./interval";
 
 const invokeEvent = (handler: Function | undefined, args: unknown) => {
@@ -15,6 +14,7 @@ export default class Timer {
     private onFinished?: (e: ITimerArgs) => void;
     private onStarted?: (e: ITimerArgs) => void;
     private onPaused?: (e: ITimerArgs) => void;
+    private onReset?: (e: ITimerArgs) => void;
 
     private timerInterval;
 
@@ -36,6 +36,7 @@ export default class Timer {
             onFinished?: ((e: ITimerArgs) => void),
             onStarted?: ((e: ITimerArgs) => void),
             onPaused?: ((e: ITimerArgs) => void),
+            onReset?: ((e: ITimerArgs) => void),
         } = {}
     ) {
         this.intervals = intervals;
@@ -46,6 +47,7 @@ export default class Timer {
         this.onFinished = handlers.onFinished;
         this.onStarted = handlers.onStarted;
         this.onPaused = handlers.onPaused;
+        this.onReset = handlers.onReset;
         this.totalSeconds = intervals.reduce((i, sum) => sum += i, 0);
         this.shiftIntervalQueue();
     }
@@ -90,14 +92,13 @@ export default class Timer {
         invokeEvent(this.onProgress, { target: this });
 
         if (secondsLeft <= 0) {
-            beep(3);
-            this.reset();
+            this._reset();
+            invokeEvent(this.onFinished, { target: this });
             return;
         }
         if (intervalSecondsLeft <= 0) {
             this.currentInterval = this.intervalQueue.shift() || 0
             this.totalInterval += this.currentInterval;
-            beep();
             invokeEvent(this.onIntervalFinished, { target: this });
         }
     }
@@ -118,6 +119,11 @@ export default class Timer {
     }
 
     reset() {
+        this._reset()
+        invokeEvent(this.onReset, { target: this });
+    }
+
+    private _reset() {
         clearInterval(this.timerInterval);
         this.prevSeconds = 0;
         this.isRunning = false;
@@ -126,7 +132,6 @@ export default class Timer {
         this.totalInterval = 0;
         this.shiftIntervalQueue();
         this.startTime = new Date().getTime();
-        invokeEvent(this.onFinished, { target: this });
     }
 
     getIsRunning() {
