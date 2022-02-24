@@ -168,7 +168,7 @@ export default function() {
                 </Box>
             </Box>
             <Typography variant='h3'>{runState.text}</Typography>
-            <Typography variant='h6'>{runState.restIntervals} intervals left</Typography>
+            <Typography variant='h6'>Осталось интервалов: {runState.restIntervals}</Typography>
             {renderResetButton()}
             <video ref={myRef} src={base64video} loop/>
             <audio ref={beepRef} src={base64beep} />

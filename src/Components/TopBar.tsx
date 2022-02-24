@@ -36,7 +36,7 @@ export default (props) => {
         <AppBar position="sticky">
             <Toolbar>
                 {renderBackButton()}
-            <Typography variant='h6' noWrap>Multi-Timer</Typography>
+            <Typography variant='h6' noWrap>Интервальный таймер</Typography>
             <Box style={{flex: 1}}/>
             {renderOkButton()}
             </Toolbar>

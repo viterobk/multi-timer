@@ -58,7 +58,6 @@ export default function(props) {
                         <TimeInterval value={interval} onChange={updateIntervalValue}/></ListItemButton>
                     <ListItemSecondaryAction>
                         <IconButton
-                            color='inherit'
                             onClick={() => { setTimerState(deleteInterval(timer, index)) }}>
                             <DeleteIcon></DeleteIcon>
                         </IconButton>
@@ -70,7 +69,7 @@ export default function(props) {
             <Button onClick={() => {setTimerState(addInterval(timer, 0))}}>
                 <AddIcon />
                 <ListItemText
-                    primary={"Add interval"} />
+                    primary={"Добавить интервал"} />
             </Button>
         </ListItem>);
         return intervals;

@@ -48,7 +48,7 @@ class Home extends Component {
             items.push(<ListItem key={-1}>
                 <Button component={Link} to='/edit/'>
                     <AddIcon />
-                    <ListItemText primary={"Add timer"} />
+                    <ListItemText primary={"Создать таймер"} />
                 </Button>
             </ListItem>);
             return items;

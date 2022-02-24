@@ -19,7 +19,7 @@ export const intervalToString = (interval: number): string => {
     const sec = interval % 60;
     const min = (interval - sec) / 60;
     const lengthParts = Array<string>();
-    if(min) lengthParts.push(`${min} min`)
-    if(sec) lengthParts.push(`${sec} sec`)
-    return lengthParts.join(', ') || '0 sec';
+    if(min) lengthParts.push(`${min} мин`)
+    if(sec) lengthParts.push(`${sec} сек`)
+    return lengthParts.join(', ') || '0 сек';
 };
