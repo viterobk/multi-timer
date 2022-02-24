@@ -81,7 +81,7 @@ export default function(props) {
                 autoFocus
                 className='Edit-name'
                 required
-                label='Timer name'
+                label='Название таймера'
                 defaultValue={timer.name}
                 onChange={(e) => {timer.name = e.target.value}} />
             <List className='Edit-list'>
