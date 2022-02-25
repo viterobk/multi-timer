@@ -9,7 +9,10 @@ const loadTimers = (): ITimer[] => {
     const timersJson = localStorage.getItem('timers');
     if(!timersJson) return [];
     const timers = JSON.parse(timersJson);
-    return timers;
+    return timers.map((t, i) => ({
+        ...t,
+        key: i
+    }));
 }
 
 class TimersStore {

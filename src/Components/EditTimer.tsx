@@ -26,6 +26,14 @@ const deleteInterval = (timer: ITimer, index: number) => {
     timer.intervals.splice(index, 1);
     return timer;
 }
+const areTimersEqual = (oldTimer: ITimer | undefined, newTimer: ITimer): boolean => {
+    if(!oldTimer) return false;
+    if(oldTimer.name !== newTimer.name) return false;
+    if(oldTimer.intervals.length !== newTimer.intervals.length) return false;
+    return !oldTimer.intervals
+        .map((interval, index) => interval === newTimer.intervals[index])
+        .some(e => !e);
+}
 
 export default function(props) {
     const { key: keyStr } = useParams();
@@ -43,6 +51,13 @@ export default function(props) {
         intervals: [...timerState.intervals],
     };
 
+    const beforeNavigateBack = () => {
+        const newTimer = timer;
+        const oldTimer = timersStore.timers.find(timer => timer.key === key);
+        if (areTimersEqual(oldTimer, newTimer)) return;
+
+        if(window.confirm('Сохранить изменения?')) submitChanges();
+    }
     const submitChanges = () => {
         props.onUpdate && props.onUpdate(timer);
     }
@@ -76,11 +91,10 @@ export default function(props) {
     };
     return (
         <div className='Edit'>
-            <TopBar backPath='/' onOkClick={submitChanges}/>
+            <TopBar backPath='/' onOkClick={submitChanges} onBackClick={beforeNavigateBack}/>
             <TextField
                 autoFocus
                 className='Edit-name'
-                required
                 label='Название таймера'
                 defaultValue={timer.name}
                 onChange={(e) => {timer.name = e.target.value}} />

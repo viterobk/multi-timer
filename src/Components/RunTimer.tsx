@@ -137,7 +137,7 @@ export default function() {
     }
     const renderResetButton = () => {
         if(!isRunning && runState.totalPercent < 100) {
-            return (<Button onClick={resetTimer}>Reset</Button>)
+            return (<Button onClick={resetTimer}>Сбросить</Button>)
         }
         return;
     }

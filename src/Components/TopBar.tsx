@@ -1,9 +1,15 @@
 import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import Check from '@mui/icons-material/Check';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default (props) => {
+    const navigate = useNavigate();
+    const backClicked = () => {
+        const e = { cancel: false };
+        props.onBackClick && props.onBackClick(e);
+        if(!e.cancel) navigate(props.backPath);
+    }
     const renderOkButton = () => {
         if(!props.backPath || !props.onOkClick) {
             return;
@@ -21,9 +27,7 @@ export default (props) => {
         if(props.backPath) {
             return <IconButton
                 color='inherit'
-                component={Link}
-                to={props.backPath}
-                onClick={props.onBackClick}
+                onClick={backClicked}
             >
                 <ArrowBack/>
             </IconButton>
