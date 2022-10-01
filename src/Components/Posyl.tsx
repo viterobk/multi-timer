@@ -82,10 +82,11 @@ export default function() {
       if(!playSound) {
         return;
       }
-      if(time.minutes === 55 && time.seconds === 0) {
+      if (time.minutes === 55 && time.seconds === 0) {
         playBeep(1);
-      }
-      if(time.minutes === 0 && time.seconds === 0) {
+      } else if (time.minutes === 59 && time.seconds === 30) {
+        playBeep(1);
+      } else if (time.minutes === 0 && time.seconds === 0) {
         playBeep(2);
       }
     })
