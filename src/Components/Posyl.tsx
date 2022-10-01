@@ -52,8 +52,8 @@ export default function() {
   }
 
   const toggleSound = () => {
-    if(!playSound && currentVideoElement) {
-      currentVideoElement.play();
+    if(currentVideoElement) {
+      playSound ? currentVideoElement.pause() : currentVideoElement.play();
     }
     setPlaySound(!playSound);
   }
