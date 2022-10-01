@@ -9,7 +9,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { useParams } from "react-router-dom";
 import timersStore from "../Stores/timersStore";
 import './RunTimer.css';
-import { createRef, useRef, useState } from 'react';
+import { createRef, useState } from 'react';
 import TopBar from './TopBar';
 import { Box } from '@mui/system';
 import Timer, { ITimerArgs } from '../Timer';

@@ -1,0 +1,23 @@
+.Posyl .Posyl-icons svg {
+  font-size: 110px;
+}
+
+.Posyl .Posyl-outerbox {
+  position: relative;
+  display: inline-flex;
+}
+
+.Posyl .Posyl-innerbox {
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Posyl video {
+  position: fixed;
+}
