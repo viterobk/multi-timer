@@ -84,7 +84,9 @@ export default function() {
       }
       if (time.minutes === 55 && time.seconds === 0) {
         playBeep(1);
-      } else if (time.minutes === 59 && time.seconds === 30) {
+      } else if (time.minutes === 58 && time.seconds === 0) {
+        playBeep(1);
+      } else if (time.minutes === 59 && time.seconds === 45) {
         playBeep(1);
       } else if (time.minutes === 0 && time.seconds === 0) {
         playBeep(2);
