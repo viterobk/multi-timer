@@ -5,7 +5,6 @@ import {
 } from '@mui/material';
 import TopBar from './TopBar';
 import './Posyl.css';
-import base64video from '../video';
 import { beep1 as base64beep } from '../Sounds';
 import { createRef, useState, useEffect } from 'react';
 import Time from '../Time';
@@ -19,8 +18,7 @@ const getTimeString = (time) => {
   return `${hPrefix}${time.hours}:${mPrefix}${time.minutes}:${sPrefix}${time.seconds}`
 }
 
-export default function() {
-  const videoRef = createRef<HTMLVideoElement>();
+const Posyl = () => {
   const beepRef = createRef<HTMLAudioElement>();
   let currentVideoElement: HTMLVideoElement | null;
   let currentAudioElement: HTMLAudioElement | null;
@@ -75,8 +73,10 @@ export default function() {
   }
 
   useEffect(() => {
+    if ('wakeLock' in navigator) {
+      global.navigator['wakeLock'].request('screen');
+    }
     currentAudioElement = beepRef.current;
-    currentVideoElement = videoRef.current;
     time.onTimeChange((time) => {
       setCurrentTime(time);
       if(!playSound) {
@@ -101,7 +101,8 @@ export default function() {
     <TopBar/>
     <Typography variant='h1'>{ getTimeString(currentTime) }</Typography>
     {generateSoundButton()}
-    <video ref={videoRef} src={base64video} loop/>
     <audio ref={beepRef} src={base64beep} />
   </div>
 }
+
+export default Posyl;
