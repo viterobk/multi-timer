@@ -7,14 +7,12 @@ var CACHE_NAME = 'intuition-training-cache-v1';
 
 // Delete old caches that are not our current one!
 self.addEventListener("activate", event => {
-  console.log('service worker\'s activate event fired');
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
     caches.keys()
       .then(keyList =>
         Promise.all(keyList.map(key => {
           if (!cacheWhitelist.includes(key)) {
-            console.log('Deleting cache: ' + key)
             return caches.delete(key);
           }
         }))
@@ -24,7 +22,6 @@ self.addEventListener("activate", event => {
 
 // The first time the user starts up the PWA, 'install' is triggered.
 self.addEventListener('install', function(event) {
-  console.log('service worker\'s install event fired');
   if (doCache) {
     event.waitUntil(
       caches.open(CACHE_NAME)
@@ -53,7 +50,6 @@ self.addEventListener('install', function(event) {
 // When the webpage goes to fetch files, we intercept that request and serve up the matching files
 // if we have them
 self.addEventListener('fetch', function(event) {
-    console.log('service worker\'s fetch event fired');
     if (doCache) {
       event.respondWith(
           caches.match(event.request).then(function(response) {
