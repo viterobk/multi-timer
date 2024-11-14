@@ -106,6 +106,7 @@ const RunTimer = () => {
     })
   }
   const startTimer = () => {
+    currentAudioElement = beepRef.current;
     lockScreen();
     timerState.timerRunner.start();
   }
