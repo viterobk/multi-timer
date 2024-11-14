@@ -31,7 +31,7 @@ const RunTimer = () => {
 
   const [isRunning, setRunning] = useState(false);
 
-  const [timerState, updateTimerState] = useState({
+  const [timerState] = useState({
     timerRunner: new Timer(
       timer.intervals,
       {

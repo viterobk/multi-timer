@@ -1,12 +1,11 @@
 import {
   Typography,
-  Button,
   IconButton,
 } from '@mui/material';
 import TopBar from './TopBar';
 import './Posyl.css';
 import { beep1 as base64beep } from '../Sounds';
-import { createRef, useState, useEffect } from 'react';
+import { createRef, useState, useEffect, useRef } from 'react';
 import Time from '../Time';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
@@ -17,18 +16,15 @@ const getTimeString = (time) => {
   const sPrefix = time.seconds < 10 ? '0' : '';
   return `${hPrefix}${time.hours}:${mPrefix}${time.minutes}:${sPrefix}${time.seconds}`
 }
+const time = new Time();
+let currentAudioElement: HTMLAudioElement | null = null;
 
 const Posyl = () => {
   const beepRef = createRef<HTMLAudioElement>();
-  let currentVideoElement: HTMLVideoElement | null;
-  let currentAudioElement: HTMLAudioElement | null;
-
-  const [ time, setTime ] = useState(new Time());
   const [ currentTime, setCurrentTime ] = useState(time.getTime());
-  const [ playSound, setPlaySound ] = useState(false); 
 
   const generateSoundButton = () => {
-    if (playSound) {
+    if (currentAudioElement) {
       return <>
         <IconButton
           className='Posyl-icons'
@@ -50,14 +46,16 @@ const Posyl = () => {
   }
 
   const toggleSound = () => {
-    if(currentVideoElement) {
-      playSound ? currentVideoElement.pause() : currentVideoElement.play();
+    if (!currentAudioElement) {
+      currentAudioElement = beepRef.current;
+    } else {
+      currentAudioElement = null;
     }
-    setPlaySound(!playSound);
   }
 
   const playBeep = (repetitions: number = 1) => {
     if (!currentAudioElement) {
+        console.warn('No audio element found');
         return;
     }
     let count = 0;
@@ -76,10 +74,9 @@ const Posyl = () => {
     if ('wakeLock' in navigator) {
       global.navigator['wakeLock'].request('screen');
     }
-    currentAudioElement = beepRef.current;
     time.onTimeChange((time) => {
       setCurrentTime(time);
-      if(!playSound) {
+      if(!currentAudioElement) {
         return;
       }
       if (time.minutes === 55 && time.seconds === 0) {
@@ -95,7 +92,7 @@ const Posyl = () => {
     return () => {
       time.onTimeChange();
     }
-  })
+  }, [])
 
   return <div className='Posyl'>
     <TopBar/>
