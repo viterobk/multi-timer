@@ -3,7 +3,7 @@
 var doCache = true;
 
 // Name our cache
-var CACHE_NAME = 'intuition-training-cache-v1';
+var CACHE_NAME = 'multi-timer-cache-v1';
 const UNCACHABLE_HOSTS = [
   'time100.ru',
 ]
