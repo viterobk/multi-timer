@@ -1,15 +1,27 @@
 .Edit .Edit-name {
-    min-width: 100%;
-    padding: 8px;
-    margin-top: 16px;
+  min-width: 100%;
+  padding: 8px;
+  margin-top: 16px;
 }
 
 .Edit .Edit-list {
-    padding-bottom: 60px;
+  padding-bottom: 60px;
 }
 
 .Edit .Edit-fab {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+.Edit .Edit-listitem {
+  display: block;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.Edit .Edit-cardcontent {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
 }

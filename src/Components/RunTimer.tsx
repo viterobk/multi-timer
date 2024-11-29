@@ -15,6 +15,7 @@ import { Box } from '@mui/system';
 import Timer, { ITimerArgs } from '../Timer';
 import { useEffect } from 'react';
 import { beep1 as base64beep } from '../Sounds';
+import { intervalToString } from '../interval';
 
 let wakeLock: any = undefined;
 
@@ -94,7 +95,9 @@ const RunTimer = () => {
     intervalPercent: timerState.timerRunner.getIntervalPercent(),
     totalPercent: timerState.timerRunner.getTotalPercent(),
     text: timerState.timerRunner.getText(),
+    intervalSecondsLeft: timerState.timerRunner.getIntervalSecondsLeft(),
     restIntervals: timerState.timerRunner.getRestIntervals(),
+    currentInterval: timerState.timerRunner.getCurrentInterval(),
   });
 
   const updateRunState = (timerInstance: Timer) => {
@@ -102,7 +105,9 @@ const RunTimer = () => {
       intervalPercent: timerInstance.getIntervalPercent(),
       totalPercent: timerInstance.getTotalPercent(),
       text: timerInstance.getText(),
+      intervalSecondsLeft: timerInstance.getIntervalSecondsLeft(),
       restIntervals: timerInstance.getRestIntervals(),
+      currentInterval: timerInstance.getCurrentInterval(),
     })
   }
   const startTimer = () => {
@@ -140,6 +145,21 @@ const RunTimer = () => {
     return;
   }
 
+  const renderCurrentInterval = ({ description }) => (<div>
+    <Typography variant='h4' style={{ color: '#1976d2' }}>{intervalToString(runState.intervalSecondsLeft)}</Typography> 
+    <Typography variant='h4' style={{ color: 'gray' }}>"{description}"</Typography>
+    
+    
+  </div>)
+
+  const renderRestIntervals = () => (
+    <div>
+      {runState.restIntervals.map(({ duration, description }) => {
+        return <p style={{ color: 'lightgray', textAlign: 'left' }}>{intervalToString(duration)} - {description}</p>
+      })}
+    </div>
+  );
+
   useEffect(() => () => {
     if (timerState.timerRunner.getIsRunning()) resetTimer()
   }, [])
@@ -147,7 +167,8 @@ const RunTimer = () => {
   return (
     <div className='Run'>
       <TopBar backPath='/' />
-      <h1>{timer.name}</h1>
+      <Typography variant='h3' style={{ color: 'gray' }}>{timer.name}</Typography>
+      <Typography variant='h6' style={{ color: '#1976d2' }}>{runState.text}</Typography>
       <Box className='Run-outerbox'>
         <CircularProgress
           size={170}
@@ -165,9 +186,11 @@ const RunTimer = () => {
           {generateCenterButton()}
         </Box>
       </Box>
-      <Typography variant='h3'>{runState.text}</Typography>
-      <Typography variant='h6'>Осталось интервалов: {runState.restIntervals}</Typography>
+      {renderCurrentInterval(runState.currentInterval)}
       {renderResetButton()}
+      <Typography variant='h6'>
+        {renderRestIntervals()}
+      </Typography>
       <audio ref={beepRef} src={base64beep} />
     </div>
   )

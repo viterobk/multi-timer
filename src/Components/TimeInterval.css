@@ -1,12 +1,17 @@
-.TimeInterval input {
-    padding: 0 2px;
-    width: 30px;
-    background-color: white;
-    color: black;
-    border: solid 1px;
+.TimeInterval {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 20px;
+  gap: 20px;
+  flex: 1;
 }
-.TimeInterval button {
-    display: inline-block;
-    padding: 0 2px;
-    width: 10px;
+
+.TimeInterval .TimeInterval-textfield.TimeInterval-textfield-fullwidth {
+  flex: 1 0 100%;
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: '100%';
+}
+.TimeInterval .TimeInterval-textfield.TimeInterval-textfield-narrow {
+  width: 80px;
 }

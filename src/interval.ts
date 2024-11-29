@@ -1,5 +1,5 @@
-export const countAllIntervals = (intervals: number[]): { min: number, sec: number, totalSec: number, text: string } => {
-    const totalLength = intervals.reduce((interval, sum) => sum += interval, 0);
+export const countAllIntervals = (intervalDurations: number[]): { min: number, sec: number, totalSec: number, text: string } => {
+    const totalLength = intervalDurations.reduce((sum, interval) => sum += interval, 0);
     return countInterval(totalLength);
 }
 

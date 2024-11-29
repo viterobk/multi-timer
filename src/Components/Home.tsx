@@ -22,7 +22,7 @@ class Home extends Component {
     render() {
         const generateListItems = () => {
             const items = timersStore.timers.map(timer => {
-                const interval = countTotalInterval(timer.intervals);
+                const interval = countTotalInterval(timer.intervals.map(i => i.duration));
 
                 return (
                     <ListItem key={timer.key} className="Home-listitem-doublepadding">
