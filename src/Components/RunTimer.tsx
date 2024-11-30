@@ -145,17 +145,23 @@ const RunTimer = () => {
     return;
   }
 
-  const renderCurrentInterval = ({ description }) => (<div>
-    <Typography variant='h4' style={{ color: '#1976d2' }}>{intervalToString(runState.intervalSecondsLeft)}</Typography> 
-    <Typography variant='h4' style={{ color: 'gray' }}>"{description}"</Typography>
-    
-    
-  </div>)
+  const renderCurrentInterval = ({ description }) => (
+    <div className='Run-currentinterval'>
+      <Typography variant='h4' className='time-color'>{intervalToString(runState.intervalSecondsLeft)}</Typography> 
+      {description && <Typography variant='h4' style={{ color: 'gray' }}>"{description}"</Typography>}
+    </div>
+  )
 
   const renderRestIntervals = () => (
-    <div>
+    <div className='Run-restintervals'>
       {runState.restIntervals.map(({ duration, description }) => {
-        return <p style={{ color: 'lightgray', textAlign: 'left' }}>{intervalToString(duration)} - {description}</p>
+        return <Typography variant='h5'>
+          {
+            description
+            ? `"${description}" (${intervalToString(duration)})`
+            : intervalToString(duration)
+          }
+        </Typography>
       })}
     </div>
   );
@@ -168,7 +174,7 @@ const RunTimer = () => {
     <div className='Run'>
       <TopBar backPath='/' />
       <Typography variant='h3' style={{ color: 'gray' }}>{timer.name}</Typography>
-      <Typography variant='h6' style={{ color: '#1976d2' }}>{runState.text}</Typography>
+      <Typography variant='h6' className='time-color'>{runState.text}</Typography>
       <Box className='Run-outerbox'>
         <CircularProgress
           size={170}
@@ -188,9 +194,7 @@ const RunTimer = () => {
       </Box>
       {renderCurrentInterval(runState.currentInterval)}
       {renderResetButton()}
-      <Typography variant='h6'>
-        {renderRestIntervals()}
-      </Typography>
+      {renderRestIntervals()}
       <audio ref={beepRef} src={base64beep} />
     </div>
   )

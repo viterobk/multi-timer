@@ -18,6 +18,16 @@
     justify-content: center;
 }
 
-.Run video {
-    position: fixed;
+.Run .Run-restintervals {
+  border-top: 1px solid #BBB;
+  padding-top: 15px;
+  color: #BBB
+}
+
+.Run .Run-restintervals>* {
+  margin-bottom: 15px;
+}
+
+.Run .time-color{
+  color: #1976d2;
 }
