@@ -1,11 +1,12 @@
 /* eslint-disable no-restricted-globals */
 
-const CACHE_NAME = 'multi-timer-cache-v3';
+const CACHE_NAME = 'multi-timer-cache-v4';
 const APP_SHELL = [
   './',
   './index.html',
   './manifest.json',
   './favicon.ico',
+  './favicon.svg',
   './logo192.png',
   './logo512.png',
 ];
