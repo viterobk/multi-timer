@@ -1,6 +1,6 @@
 import {
   TextField,
-  Fab,
+  Button,
   IconButton,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/DeleteOutline';
@@ -216,15 +216,14 @@ export default function (props) {
               ))}
             </VerticalSortableList>
           )}
+          <Button
+            className="Edit-add"
+            startIcon={<AddIcon />}
+            onClick={() => { addInterval(timer, { duration: 0, description: '' }); rerender(); }}
+          >
+            Добавить интервал
+          </Button>
         </div>
-        <Fab
-          className="App-fab"
-          color="primary"
-          aria-label="Добавить интервал"
-          onClick={() => { addInterval(timer, { duration: 0, description: '' }); rerender(); }}
-        >
-          <AddIcon />
-        </Fab>
       </div>
       <ConfirmDialog
         open={leaveOpen}

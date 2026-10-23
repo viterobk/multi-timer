@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-globals */
 
-const CACHE_NAME = 'multi-timer-cache-v4';
+const CACHE_NAME = 'multi-timer-cache-v5';
 const APP_SHELL = [
   './',
   './index.html',
@@ -9,6 +9,7 @@ const APP_SHELL = [
   './favicon.svg',
   './logo192.png',
   './logo512.png',
+  './sounds/beep.mp3',
 ];
 const FONT_CSS_URLS = [
   'https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap',

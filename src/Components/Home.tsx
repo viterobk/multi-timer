@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Fab, IconButton } from '@mui/material';
+import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/EditOutlined';
 import AddIcon from '@mui/icons-material/Add';
@@ -147,15 +147,14 @@ const Home = observer(() => {
                         {cards}
                     </VerticalSortableList>
                 )}
-                <Fab
-                    className="App-fab"
-                    color="primary"
+                <IconButton
+                    className="Home-add"
                     component={Link}
                     to="/edit/"
                     aria-label="Создать таймер"
                 >
                     <AddIcon />
-                </Fab>
+                </IconButton>
             </div>
             <ConfirmDialog
                 open={deleteOpen}

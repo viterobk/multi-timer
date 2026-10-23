@@ -16,22 +16,3 @@
   padding: 8px 18px 28px;
   padding-bottom: max(28px, env(safe-area-inset-bottom));
 }
-
-.App-fab.MuiFab-root {
-  align-self: flex-end;
-  flex-shrink: 0;
-  width: 48px !important;
-  height: 48px !important;
-  margin-top: 4px;
-  color: #042f2e !important;
-  background: linear-gradient(180deg, #7ef0d8 0%, var(--accent-strong) 100%) !important;
-  box-shadow: 0 10px 24px rgba(45, 212, 191, 0.22) !important;
-}
-
-.App-fab.MuiFab-root:hover {
-  background: linear-gradient(180deg, #8af5de 0%, var(--accent) 100%) !important;
-}
-
-.App-fab svg {
-  font-size: 28px;
-}

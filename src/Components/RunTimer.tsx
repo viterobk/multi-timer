@@ -13,13 +13,13 @@ import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import { useParams } from "react-router-dom";
 import timersStore from "../Stores/timersStore";
 import './RunTimer.css';
-import { createRef, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import TopBar from './TopBar';
 import ShareLinkDialog from './ShareLinkDialog';
 import { buildShareUrl } from '../shareLink';
 import Timer, { ITimerArgs } from '../Timer';
 import { useEffect } from 'react';
-import { beep1 as base64beep } from '../Sounds';
+import { playBeep, unlockBeep } from '../Sounds/beepPlayer';
 import { intervalToString } from '../interval';
 import MarkdownContent from './MarkdownContent';
 
@@ -38,9 +38,6 @@ const formatClock = (seconds: number) => {
 }
 
 const RunTimer = () => {
-  const beepRef = createRef<HTMLAudioElement>();
-  let currentAudioElement: HTMLAudioElement | null;
-
   const { key: keyStr } = useParams();
   if (!keyStr) throw Error("Timer key is empty");
 
@@ -87,21 +84,6 @@ const RunTimer = () => {
     )
   })
 
-  const playBeep = (repetitions: number = 1) => {
-    if (!currentAudioElement) {
-      return;
-    }
-    let count = 0;
-    currentAudioElement.onended = (e) => {
-      count += 1;
-
-      if (!currentAudioElement || count >= repetitions) return;
-
-      currentAudioElement.currentTime = 0;
-      currentAudioElement.play();
-    }
-    currentAudioElement.play();
-  }
   const lockScreen = () => {
     if (!('wakeLock' in navigator)) {
       console.warn('wakeLock is not supported');
@@ -137,7 +119,7 @@ const RunTimer = () => {
     })
   }
   const startTimer = () => {
-    currentAudioElement = beepRef.current;
+    void unlockBeep();
     lockScreen();
     timerState.timerRunner.start();
   }
@@ -285,7 +267,6 @@ const RunTimer = () => {
         </div>
         {renderResetButton()}
         {renderRestIntervals()}
-        <audio ref={beepRef} src={base64beep} />
       </div>
       <ShareLinkDialog
         open={shareOpen}

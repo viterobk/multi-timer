@@ -7,8 +7,10 @@ import { createBrowserHistory } from 'history';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
+import { startBeepPlayer } from './Sounds/beepPlayer';
 
 const history = createBrowserHistory();
+startBeepPlayer();
 
 ReactDOM.render(
     <ThemeProvider theme={theme}>

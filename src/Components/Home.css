@@ -129,3 +129,20 @@
   line-height: 1.45;
 }
 
+.Home-add.MuiIconButton-root {
+  align-self: flex-end;
+  width: 52px;
+  height: 52px;
+  margin-top: -4px;
+  color: var(--muted);
+}
+
+.Home-add.MuiIconButton-root .MuiSvgIcon-root {
+  font-size: 32px;
+}
+
+.Home-add.MuiIconButton-root:hover {
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+
