@@ -51,7 +51,7 @@ html[data-theme="light"] {
   --code-block: rgba(15, 23, 42, 0.05);
   --bg-glow-1: rgba(13, 148, 136, 0.1);
   --bg-glow-2: rgba(2, 132, 199, 0.07);
-  --header: color-mix(in srgb, var(--bg) 90%, var(--text));
+  --header: color-mix(in srgb, var(--bg) 95%, var(--text));
 }
 
 * {
