@@ -5,8 +5,13 @@
   min-height: 100dvh;
 }
 
-.Edit-name {
+.Edit-name,
+.Edit-description {
   width: 100%;
+}
+
+.Edit-description textarea {
+  line-height: 1.45;
 }
 
 .Edit-hint {

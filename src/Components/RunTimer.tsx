@@ -14,6 +14,7 @@ import Timer, { ITimerArgs } from '../Timer';
 import { useEffect } from 'react';
 import { beep1 as base64beep } from '../Sounds';
 import { intervalToString } from '../interval';
+import MarkdownContent from './MarkdownContent';
 
 let wakeLock: any = undefined;
 
@@ -41,6 +42,8 @@ const RunTimer = () => {
   if (!timer) throw Error("Timer is empty");
 
   const [isRunning, setRunning] = useState(false);
+  const [notesOpen, setNotesOpen] = useState(false);
+  const timerNotes = (timer.description || '').trim();
 
   const [timerState] = useState({
     timerRunner: new Timer(
@@ -195,6 +198,23 @@ const RunTimer = () => {
         <div className="Run-heading">
           <p className="Run-kicker">Всего {runState.text}</p>
           <h2 className="Run-name">{timer.name || 'Без названия'}</h2>
+          {timerNotes && (
+            <div className="Run-notes">
+              <button
+                type="button"
+                className="Run-notes-toggle"
+                aria-expanded={notesOpen}
+                onClick={() => setNotesOpen((open) => !open)}
+              >
+                {notesOpen ? 'Свернуть' : 'Подробнее...'}
+              </button>
+              {notesOpen && (
+                <div className="Run-notes-body">
+                  <MarkdownContent>{timerNotes}</MarkdownContent>
+                </div>
+              )}
+            </div>
+          )}
         </div>
         <div className="Run-stage">
           <div className="Run-rings">

@@ -76,12 +76,17 @@ const normalizeTimer = (timer: unknown): ITimerData => {
   if (!timer || typeof timer !== 'object') {
     throw new Error('Некорректный таймер');
   }
-  const { name, intervals } = timer as { name?: unknown, intervals?: unknown };
+  const { name, description, intervals } = timer as {
+    name?: unknown,
+    description?: unknown,
+    intervals?: unknown,
+  };
   if (!Array.isArray(intervals)) {
     throw new Error('У таймера нет списка интервалов');
   }
   return {
     name: typeof name === 'string' ? name : '',
+    description: typeof description === 'string' ? description : '',
     intervals: intervals.map(normalizeInterval),
   };
 }
@@ -124,6 +129,7 @@ const loadTimers = (): ITimer[] => {
   }
   return config.timers.map((timer, index) => ({
     ...timer,
+    description: timer.description || '',
     key: index,
   }));
 }

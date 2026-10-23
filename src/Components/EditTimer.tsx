@@ -24,6 +24,7 @@ const deleteInterval = (timer: ITimer, index: number) => {
 const areTimersEqual = (oldTimer: ITimer | undefined, newTimer: ITimer): boolean => {
   if (!oldTimer) return false;
   if (oldTimer.name !== newTimer.name) return false;
+  if ((oldTimer.description || '') !== (newTimer.description || '')) return false;
   if (oldTimer.intervals.length !== newTimer.intervals.length) return false;
   return !oldTimer.intervals
     .map((interval, index) => interval === newTimer.intervals[index])
@@ -40,6 +41,7 @@ export default function (props) {
     key,
     intervals: [],
     name: '',
+    description: '',
   });
   const timer: ITimer = {
     ...timerState,
@@ -95,6 +97,16 @@ export default function (props) {
           label="Название таймера"
           defaultValue={timer.name}
           onChange={(e) => { timer.name = e.target.value }}
+        />
+        <TextField
+          className="Edit-description"
+          label="Описание"
+          placeholder="Как выполнять, инвентарь, ссылки…"
+          helperText="Можно Markdown: ссылки, списки, **жирный**, *курсив*, заголовки."
+          defaultValue={timer.description || ''}
+          multiline
+          minRows={3}
+          onChange={(e) => { timer.description = e.target.value }}
         />
         <div className="Edit-list">
           {timer.intervals.length === 0 && (
