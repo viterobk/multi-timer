@@ -234,28 +234,28 @@ const RunTimer = () => {
             <CircularProgress
               className="Run-track"
               size={220}
-              thickness={2.2}
+              thickness={4}
               variant="determinate"
               value={100}
             />
             <CircularProgress
               className="Run-total"
               size={220}
-              thickness={2.2}
+              thickness={4}
               variant="determinate"
               value={clampPercent(runState.totalPercent)}
             />
             <CircularProgress
               className="Run-track Run-track-inner"
               size={176}
-              thickness={3.4}
+              thickness={9.8}
               variant="determinate"
               value={100}
             />
             <CircularProgress
               className="Run-interval"
               size={176}
-              thickness={3.4}
+              thickness={9.8}
               variant="determinate"
               value={clampPercent(runState.intervalPercent)}
             />

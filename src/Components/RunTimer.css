@@ -117,7 +117,7 @@
 }
 
 .Run-rings .MuiCircularProgress-circle {
-  stroke-linecap: round;
+  stroke-linecap: butt;
 }
 
 .Run-center {
