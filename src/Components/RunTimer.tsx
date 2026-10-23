@@ -20,8 +20,8 @@ import { buildShareUrl } from '../shareLink';
 import Timer, { ITimerArgs } from '../Timer';
 import { useEffect } from 'react';
 import { playBeep, unlockBeep } from '../Sounds/beepPlayer';
-import { intervalToString } from '../interval';
 import MarkdownContent from './MarkdownContent';
+import { IInterval } from './TimeInterval';
 
 let wakeLock: any = undefined;
 
@@ -35,6 +35,13 @@ const formatClock = (seconds: number) => {
   const min = Math.floor(total / 60);
   const sec = total % 60;
   return `${min}:${sec.toString().padStart(2, '0')}`;
+}
+
+const VISIBLE_INTERVALS = 5;
+
+const intervalLabel = (interval: IInterval, order: number) => {
+  const name = (interval.description || '').trim();
+  return name || `Интервал ${order}`;
 }
 
 const RunTimer = () => {
@@ -75,6 +82,7 @@ const RunTimer = () => {
         },
         onIntervalFinished: (e: ITimerArgs) => {
           playBeep();
+          updateRunState(e.target);
         },
         onReset: (e: ITimerArgs) => {
           updateRunState(e.target);
@@ -153,7 +161,17 @@ const RunTimer = () => {
     return;
   }
 
-  const renderCurrentInterval = ({ description }) => (
+  const queue = timer.intervals
+    .map((interval, order) => ({
+      interval,
+      id: `interval-${order}`,
+      label: intervalLabel(interval, order + 1),
+    }))
+    .filter((item) => item.interval.duration > 0 || Boolean((item.interval.description || '').trim()));
+  const currentIndex = queue.findIndex((item) => item.interval === runState.currentInterval);
+  const queueOffset = currentIndex >= 0 ? currentIndex : 0;
+
+  const renderReadout = () => (
     <div className="Run-readout">
       <div className="Run-times">
         <div className="Run-time is-total">
@@ -169,31 +187,28 @@ const RunTimer = () => {
           </p>
         </div>
       </div>
-      {description
-        ? <p className="Run-caption">{description}</p>
-        : <p className="Run-caption muted">Текущий интервал</p>
-      }
+      {queue.length > 0 && (
+        <ol
+          className={`Run-queue${queue.length - queueOffset > 1 ? ' has-upcoming' : ''}`}
+          aria-label="Очередь интервалов"
+        >
+          {queue.map((item, index) => {
+            const slot = index - queueOffset;
+            const slotClass = slot < 0
+              ? 'is-slot-exit'
+              : slot >= VISIBLE_INTERVALS
+                ? 'is-slot-hidden'
+                : `is-slot-${slot}`;
+            return (
+              <li key={item.id} className={`Run-queue-item ${slotClass}`}>
+                {item.label}
+              </li>
+            );
+          })}
+        </ol>
+      )}
     </div>
   )
-
-  const renderRestIntervals = () => {
-    if (!runState.restIntervals.length) {
-      return null;
-    }
-    return (
-      <div className="Run-upcoming">
-        <h2>Дальше</h2>
-        <ol>
-          {runState.restIntervals.map(({ duration, description }, index) => (
-            <li key={index}>
-              <span>{description || `Интервал ${index + 2}`}</span>
-              <strong>{intervalToString(duration)}</strong>
-            </li>
-          ))}
-        </ol>
-      </div>
-    );
-  }
 
   useEffect(() => () => {
     if (timerState.timerRunner.getIsRunning()) resetTimer()
@@ -277,10 +292,9 @@ const RunTimer = () => {
               {generateCenterButton()}
             </div>
           </div>
-          {renderCurrentInterval(runState.currentInterval)}
+          {renderReadout()}
         </div>
         {renderResetButton()}
-        {renderRestIntervals()}
       </div>
       <ShareLinkDialog
         open={shareOpen}

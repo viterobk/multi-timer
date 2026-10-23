@@ -220,69 +220,104 @@
   line-height: 1;
 }
 
-.Run-caption {
-  margin: 0;
-  max-width: 18ch;
-  color: var(--text);
-  font-size: clamp(1.55rem, 5.5vw, 2.1rem);
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  line-height: 1.15;
-  text-align: center;
+.Run-queue {
+  position: relative;
+  width: 100%;
+  height: 12.2rem;
+  margin: 6px 0 0;
+  padding: 0;
+  overflow: hidden;
+  list-style: none;
 }
 
-.Run-caption.muted {
-  max-width: none;
-  color: var(--muted);
-  font-size: 1.05rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+.Run-queue.has-upcoming::after {
+  content: '';
+  position: absolute;
+  left: 24%;
+  right: 24%;
+  top: 3.2rem;
+  height: 1px;
+  background: rgba(244, 247, 251, 0.22);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.Run-queue-item {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0;
+  color: var(--text);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition:
+    top 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.45s ease,
+    font-size 0.45s ease,
+    line-height 0.45s ease;
+}
+
+.Run-queue-item.is-slot-exit {
+  top: -2.85rem;
+  font-size: 2.5rem;
+  line-height: 2.85rem;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.Run-queue-item.is-slot-0 {
+  top: 0;
+  font-size: 2.5rem;
+  line-height: 2.85rem;
+  opacity: 1;
+}
+
+.Run-queue-item.is-slot-1 {
+  top: 3.75rem;
+  font-size: 1.95rem;
+  line-height: 2.3rem;
+  opacity: 0.7;
+}
+
+.Run-queue-item.is-slot-2 {
+  top: 6.1rem;
+  font-size: 1.6rem;
+  line-height: 1.95rem;
+  opacity: 0.48;
+}
+
+.Run-queue-item.is-slot-3 {
+  top: 8.1rem;
+  font-size: 1.32rem;
+  line-height: 1.65rem;
+  opacity: 0.32;
+}
+
+.Run-queue-item.is-slot-4 {
+  top: 9.85rem;
+  font-size: 1.12rem;
+  line-height: 1.45rem;
+  opacity: 0.18;
+}
+
+.Run-queue-item.is-slot-hidden {
+  top: 11.35rem;
+  font-size: 1.12rem;
+  line-height: 1.45rem;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .Run-queue-item {
+    transition: none;
+  }
 }
 
 .Run-reset {
   color: var(--muted) !important;
-}
-
-.Run-upcoming {
-  width: 100%;
-  padding: 16px 18px 8px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  text-align: left;
-}
-
-.Run-upcoming h2 {
-  margin: 0 0 10px;
-  color: var(--muted);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.Run-upcoming ol {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.Run-upcoming li {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 10px 0;
-  border-top: 1px solid var(--line);
-}
-
-.Run-upcoming li span {
-  color: var(--muted);
-  font-size: 0.95rem;
-}
-
-.Run-upcoming li strong {
-  color: var(--muted);
-  font-weight: 650;
-  font-variant-numeric: tabular-nums;
 }
