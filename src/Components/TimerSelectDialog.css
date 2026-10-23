@@ -1,0 +1,72 @@
+.TimerSelectDialog .MuiPaper-root {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow);
+}
+
+.TimerSelectDialog .MuiDialogTitle-root {
+  padding-bottom: 8px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.TimerSelectDialog-empty {
+  margin: 8px 0 4px;
+  color: var(--muted);
+}
+
+.TimerSelectDialog-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.TimerSelectDialog-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px 4px 2px;
+  border-radius: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.TimerSelectDialog-row:hover {
+  background: var(--surface-hover);
+}
+
+.TimerSelectDialog-row.is-all {
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  font-weight: 650;
+}
+
+.TimerSelectDialog-copy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.TimerSelectDialog-copy strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 1rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.TimerSelectDialog-copy em {
+  color: var(--muted);
+  font-style: normal;
+  font-size: 0.86rem;
+}
+
+.TimerSelectDialog .MuiDialogActions-root {
+  padding: 8px 16px 16px;
+}

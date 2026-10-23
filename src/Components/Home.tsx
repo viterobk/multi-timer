@@ -10,6 +10,7 @@ import timersStore from '../Stores/timersStore';
 import './Home.css';
 import { observer } from 'mobx-react';
 import TopBar from './TopBar';
+import HomeMenu from './HomeMenu';
 import { countAllIntervals as countTotalInterval } from '../interval';
 
 const intervalWord = (count: number) => {
@@ -26,7 +27,7 @@ class Home extends Component {
 
         return (
             <div className="Home">
-                <TopBar />
+                <TopBar trailing={<HomeMenu />} />
                 <div className="page">
                     {timers.length === 0 ? (
                         <div className="Home-empty">
