@@ -2,14 +2,21 @@ import {
   CircularProgress,
   Button,
   IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
 import PauseIcon from '@mui/icons-material/PauseRounded';
 import PlayArrowIcon from '@mui/icons-material/PlayArrowRounded';
+import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import { useParams } from "react-router-dom";
 import timersStore from "../Stores/timersStore";
 import './RunTimer.css';
-import { createRef, useState } from 'react';
+import { createRef, useMemo, useState } from 'react';
 import TopBar from './TopBar';
+import ShareLinkDialog from './ShareLinkDialog';
+import { buildShareUrl } from '../shareLink';
 import Timer, { ITimerArgs } from '../Timer';
 import { useEffect } from 'react';
 import { beep1 as base64beep } from '../Sounds';
@@ -43,7 +50,13 @@ const RunTimer = () => {
 
   const [isRunning, setRunning] = useState(false);
   const [notesOpen, setNotesOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
   const timerNotes = (timer.description || '').trim();
+  const shareUrl = useMemo(() => buildShareUrl({
+    name: timer.name,
+    description: timer.description || '',
+    intervals: timer.intervals,
+  }), [timer]);
 
   const [timerState] = useState({
     timerRunner: new Timer(
@@ -193,27 +206,45 @@ const RunTimer = () => {
 
   return (
     <div className={`Run ${isRunning ? 'is-running' : ''}`}>
-      <TopBar backPath="/" />
+      <TopBar
+        backPath="/"
+        trailing={
+          <IconButton aria-label="Поделиться" onClick={() => setShareOpen(true)}>
+            <ShareOutlinedIcon />
+          </IconButton>
+        }
+      />
       <div className="page Run-page">
         <div className="Run-heading">
           <p className="Run-kicker">Всего {runState.text}</p>
           <h2 className="Run-name">{timer.name || 'Без названия'}</h2>
           {timerNotes && (
-            <div className="Run-notes">
+            <>
               <button
                 type="button"
                 className="Run-notes-toggle"
+                aria-haspopup="dialog"
                 aria-expanded={notesOpen}
-                onClick={() => setNotesOpen((open) => !open)}
+                onClick={() => setNotesOpen(true)}
               >
-                {notesOpen ? 'Свернуть' : 'Подробнее...'}
+                Подробнее...
               </button>
-              {notesOpen && (
-                <div className="Run-notes-body">
+              <Dialog
+                className="Run-notes-dialog"
+                open={notesOpen}
+                onClose={() => setNotesOpen(false)}
+                fullWidth
+                maxWidth="sm"
+              >
+                <DialogTitle>{timer.name || 'Описание'}</DialogTitle>
+                <DialogContent>
                   <MarkdownContent>{timerNotes}</MarkdownContent>
-                </div>
-              )}
-            </div>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={() => setNotesOpen(false)}>Закрыть</Button>
+                </DialogActions>
+              </Dialog>
+            </>
           )}
         </div>
         <div className="Run-stage">
@@ -256,6 +287,11 @@ const RunTimer = () => {
         {renderRestIntervals()}
         <audio ref={beepRef} src={base64beep} />
       </div>
+      <ShareLinkDialog
+        open={shareOpen}
+        url={shareUrl}
+        onClose={() => setShareOpen(false)}
+      />
     </div>
   )
 }

@@ -1,0 +1,54 @@
+.ShareImport {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.ShareImport-intro h2 {
+  margin: 8px 0 6px;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.ShareImport-intro p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.ShareImport-action {
+  align-self: stretch;
+}
+
+.ShareImport-conflict {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.ShareConflictDialog .MuiPaper-root {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow);
+}
+
+.ShareConflictDialog .MuiDialogTitle-root {
+  padding-bottom: 8px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.ShareConflictDialog-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 16px 16px !important;
+}
+
+.ShareConflictDialog-actions .MuiButton-root {
+  margin: 0 !important;
+  width: 100%;
+}

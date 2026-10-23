@@ -1,0 +1,40 @@
+.ShareLinkDialog .MuiPaper-root {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow);
+}
+
+.ShareLinkDialog .MuiDialogTitle-root {
+  padding-bottom: 8px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.ShareLinkDialog-hint {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.ShareLinkDialog-url {
+  display: block;
+  width: 100%;
+  min-height: 112px;
+  margin: 0;
+  padding: 12px 14px;
+  resize: vertical;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--bg-soft);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  word-break: break-all;
+}
+
+.ShareLinkDialog .MuiDialogActions-root {
+  padding: 8px 16px 16px;
+}

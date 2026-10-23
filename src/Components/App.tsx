@@ -7,6 +7,7 @@ import './App.css';
 import Home from './Home';
 import EditTimer from './EditTimer';
 import RunTimer from './RunTimer';
+import ShareImport from './ShareImport';
 import Posyl from './Posyl';
 import timersStore from '../Stores/timersStore';
 
@@ -19,6 +20,7 @@ export default () => {
           <Route path='/edit' element={<EditTimer onUpdate={timersStore.update} />} />
           <Route path='/edit/:key' element={<EditTimer onUpdate={timersStore.update} />} />
           <Route path='/run/:key' element={<RunTimer />} />
+          <Route path='/t/*' element={<ShareImport />} />
           <Route path='/posyl' element={<Posyl />}/>
         </Routes>
       </Router>

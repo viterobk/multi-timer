@@ -151,8 +151,9 @@ class TimersStore {
     saveTimers(this.timers)
   });
 
-  importTimers = action((incoming: ITimerData[]) => {
+  importTimers = action((incoming: ITimerData[]): number[] => {
     const start = this.timers.length;
+    const keys = incoming.map((_, index) => start + index);
     incoming.forEach((timer, index) => {
       this.timers.push({
         ...timer,
@@ -160,6 +161,7 @@ class TimersStore {
       });
     });
     saveTimers(this.timers);
+    return keys;
   });
 
   delete = action((timerKey: number) => {
