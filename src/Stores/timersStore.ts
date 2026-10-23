@@ -164,6 +164,21 @@ class TimersStore {
     return keys;
   });
 
+  move = action((fromIndex: number, toIndex: number) => {
+    if (
+      fromIndex === toIndex
+      || fromIndex < 0
+      || toIndex < 0
+      || fromIndex >= this.timers.length
+      || toIndex >= this.timers.length
+    ) {
+      return;
+    }
+    const [removed] = this.timers.splice(fromIndex, 1);
+    this.timers.splice(toIndex, 0, removed);
+    saveTimers(this.timers);
+  });
+
   delete = action((timerKey: number) => {
     const timerIndex = this.timers.findIndex(t => t.key === timerKey);
     if (timerIndex < 0) throw Error(`Timer with ${timerKey} key not found`);

@@ -21,7 +21,8 @@
   line-height: 1.45;
 }
 
-.Edit-list {
+.Edit-list,
+.Edit-list-items {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -50,6 +51,12 @@
   text-transform: uppercase;
 }
 
+.interval-card-head .DragHandle {
+  width: 24px;
+  height: 28px;
+  margin-left: -4px;
+}
+
 .interval-card-index {
   display: grid;
   place-items: center;
@@ -69,12 +76,4 @@
 .interval-card-delete:hover {
   color: var(--danger) !important;
   background: var(--danger-dim) !important;
-}
-
-.Edit-add {
-  width: 100%;
-  min-height: 52px;
-  color: var(--accent) !important;
-  border: 1px dashed color-mix(in srgb, var(--accent) 45%, transparent) !important;
-  background: var(--accent-dim) !important;
 }

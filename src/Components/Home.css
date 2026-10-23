@@ -21,6 +21,11 @@
   box-shadow: var(--shadow);
 }
 
+.timer-card .DragHandle {
+  align-self: center;
+  margin-left: 8px;
+}
+
 .timer-card-main {
   display: flex;
   align-items: center;
@@ -29,6 +34,10 @@
   flex: 1;
   padding: 16px 8px 16px 18px;
   text-align: left;
+}
+
+.timer-card .DragHandle + .timer-card-main {
+  padding-left: 10px;
 }
 
 .timer-card-copy {
@@ -120,22 +129,3 @@
   line-height: 1.45;
 }
 
-.Home-create {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 52px;
-  margin-top: 4px;
-  padding: 12px 18px;
-  border-radius: 16px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: #042f2e;
-  background: linear-gradient(180deg, #7ef0d8 0%, var(--accent-strong) 100%);
-  box-shadow: 0 10px 24px rgba(45, 212, 191, 0.22);
-}
-
-.Home-create:active {
-  transform: translateY(1px);
-}

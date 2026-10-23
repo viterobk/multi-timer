@@ -1,11 +1,13 @@
 import {
   TextField,
-  Button,
+  Fab,
   IconButton,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/DeleteOutline';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate, useParams } from "react-router-dom";
+import { arrayMove, useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import timersStore from "../Stores/timersStore";
 import './EditTimer.css';
 import { useRef, useState } from 'react';
@@ -13,10 +15,23 @@ import { ITimer } from './interfaces';
 import TopBar from './TopBar';
 import TimeInterval, { IInterval } from './TimeInterval';
 import ConfirmDialog from './ConfirmDialog';
+import DragHandle from './DragHandle';
+import VerticalSortableList from './VerticalSortableList';
 import { timersHaveSameConfig } from '../shareLink';
 
+type DraftInterval = IInterval & { id: string };
+
+let nextIntervalId = 1;
+const createIntervalId = () => `interval-${nextIntervalId++}`;
+
+const toDraftInterval = (interval: IInterval): DraftInterval => ({
+  duration: interval.duration,
+  description: interval.description,
+  id: (interval as DraftInterval).id || createIntervalId(),
+});
+
 const addInterval = (timer: ITimer, interval: IInterval) => {
-  timer.intervals.push(interval);
+  timer.intervals.push(toDraftInterval(interval));
   return timer;
 }
 const deleteInterval = (timer: ITimer, index: number) => {
@@ -33,12 +48,76 @@ const emptyTimer = (key: number): ITimer => ({
 const copyTimer = (source: ITimer): ITimer => ({
   ...source,
   description: source.description || '',
-  intervals: source.intervals.map((interval) => ({ ...interval })),
+  intervals: source.intervals.map(toDraftInterval),
+});
+
+const toPersistedTimer = (timer: ITimer): ITimer => ({
+  ...timer,
+  intervals: timer.intervals.map(({ duration, description }) => ({ duration, description })),
 });
 
 const isDraftUnchanged = (key: number, draft: ITimer): boolean => {
   const original = timersStore.timers.find((timer) => timer.key === key) || emptyTimer(key);
   return timersHaveSameConfig(original, draft);
+};
+
+const SortableIntervalCard = ({
+  id,
+  index,
+  interval,
+  sortable,
+  onChange,
+  onDelete,
+}: {
+  id: string;
+  index: number;
+  interval: IInterval;
+  sortable: boolean;
+  onChange: (value: IInterval) => void;
+  onDelete: () => void;
+}) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id,
+    disabled: !sortable,
+  });
+
+  return (
+    <article
+      ref={setNodeRef}
+      className={`interval-card ${isDragging ? 'is-dragging' : ''}`}
+      style={{
+        transform: CSS.Transform.toString(transform),
+        transition,
+      }}
+    >
+      <div className="interval-card-head">
+        {sortable && (
+          <DragHandle
+            label="Переместить интервал"
+            attributes={attributes}
+            listeners={listeners}
+          />
+        )}
+        <span className="interval-card-index">{index + 1}</span>
+        <span>Интервал</span>
+        <IconButton
+          className="interval-card-delete"
+          aria-label="Удалить интервал"
+          onClick={onDelete}
+        >
+          <DeleteIcon />
+        </IconButton>
+      </div>
+      <TimeInterval value={interval} onChange={onChange} />
+    </article>
+  );
 };
 
 export default function (props) {
@@ -68,7 +147,7 @@ export default function (props) {
   };
 
   const submitChanges = () => {
-    props.onUpdate && props.onUpdate(timer);
+    props.onUpdate && props.onUpdate(toPersistedTimer(timer));
   };
 
   const saveAndLeave = () => {
@@ -80,28 +159,13 @@ export default function (props) {
     navigate('/');
   };
 
-  const generateIntervalItems = () => {
-    return timer.intervals.map((interval, index) => {
-      const updateIntervalValue = (value: IInterval) => {
-        timer.intervals[index] = value;
-      }
-      return (
-        <article key={index} className="interval-card">
-          <div className="interval-card-head">
-            <span className="interval-card-index">{index + 1}</span>
-            <span>Интервал</span>
-            <IconButton
-              className="interval-card-delete"
-              aria-label="Удалить интервал"
-              onClick={() => { deleteInterval(timer, index); rerender(); }}>
-              <DeleteIcon />
-            </IconButton>
-          </div>
-          <TimeInterval value={interval} onChange={updateIntervalValue}/>
-        </article>
-      )
-    });
+  const reorderIntervals = (from: number, to: number) => {
+    timer.intervals = arrayMove(timer.intervals, from, to);
+    rerender();
   };
+
+  const intervalIds = timer.intervals.map((interval) => (interval as DraftInterval).id);
+  const sortable = timer.intervals.length > 1;
 
   return (
     <div className="Edit">
@@ -133,15 +197,34 @@ export default function (props) {
           {timer.intervals.length === 0 && (
             <p className="Edit-hint">Добавьте хотя бы один интервал — работу, отдых или паузу.</p>
           )}
-          {generateIntervalItems()}
+          {timer.intervals.length > 0 && (
+            <VerticalSortableList className="Edit-list-items" items={intervalIds} onReorder={reorderIntervals}>
+              {timer.intervals.map((interval, index) => (
+                <SortableIntervalCard
+                  key={(interval as DraftInterval).id}
+                  id={(interval as DraftInterval).id}
+                  index={index}
+                  interval={interval}
+                  sortable={sortable}
+                  onChange={(value) => {
+                    const current = timer.intervals[index];
+                    current.duration = value.duration;
+                    current.description = value.description;
+                  }}
+                  onDelete={() => { deleteInterval(timer, index); rerender(); }}
+                />
+              ))}
+            </VerticalSortableList>
+          )}
         </div>
-        <Button
-          className="Edit-add"
+        <Fab
+          className="App-fab"
+          color="primary"
+          aria-label="Добавить интервал"
           onClick={() => { addInterval(timer, { duration: 0, description: '' }); rerender(); }}
-          startIcon={<AddIcon />}
         >
-          Добавить интервал
-        </Button>
+          <AddIcon />
+        </Fab>
       </div>
       <ConfirmDialog
         open={leaveOpen}
