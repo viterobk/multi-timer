@@ -37,7 +37,20 @@ const formatClock = (seconds: number) => {
   return `${min}:${sec.toString().padStart(2, '0')}`;
 }
 
-const VISIBLE_INTERVALS = 5;
+const UNIQUE_SLOTS = 5;
+const SLOT_TOPS = [0, 2.25, 3.85, 5.28, 6.58];
+const SLOT_HEIGHTS = [1.75, 1.55, 1.38, 1.26, 1.16];
+const REST_STEP = 1.16;
+
+const slotTop = (slot: number) => {
+  if (slot < 0) return -SLOT_HEIGHTS[0];
+  if (slot < SLOT_TOPS.length) return SLOT_TOPS[slot];
+  return SLOT_TOPS[SLOT_TOPS.length - 1] + (slot - (SLOT_TOPS.length - 1)) * REST_STEP;
+};
+
+const slotHeight = (slot: number) => (
+  slot < SLOT_HEIGHTS.length ? SLOT_HEIGHTS[Math.max(0, slot)] : REST_STEP
+);
 
 const intervalLabel = (interval: IInterval, order: number) => {
   const name = (interval.description || '').trim();
@@ -170,6 +183,11 @@ const RunTimer = () => {
     .filter((item) => item.interval.duration > 0 || Boolean((item.interval.description || '').trim()));
   const currentIndex = queue.findIndex((item) => item.interval === runState.currentInterval);
   const queueOffset = currentIndex >= 0 ? currentIndex : 0;
+  const remaining = Math.max(0, queue.length - queueOffset);
+  const lastSlot = remaining - 1;
+  const queueHeight = remaining <= 0
+    ? 0
+    : slotTop(lastSlot) + slotHeight(lastSlot);
 
   const renderReadout = () => (
     <div className="Run-readout">
@@ -189,18 +207,23 @@ const RunTimer = () => {
       </div>
       {queue.length > 0 && (
         <ol
-          className={`Run-queue${queue.length - queueOffset > 1 ? ' has-upcoming' : ''}`}
+          className={`Run-queue${remaining > 1 ? ' has-upcoming' : ''}`}
           aria-label="Очередь интервалов"
+          style={{ height: `${queueHeight}rem` }}
         >
           {queue.map((item, index) => {
             const slot = index - queueOffset;
             const slotClass = slot < 0
               ? 'is-slot-exit'
-              : slot >= VISIBLE_INTERVALS
-                ? 'is-slot-hidden'
+              : slot >= UNIQUE_SLOTS
+                ? 'is-slot-rest'
                 : `is-slot-${slot}`;
             return (
-              <li key={item.id} className={`Run-queue-item ${slotClass}`}>
+              <li
+                key={item.id}
+                className={`Run-queue-item ${slotClass}`}
+                style={{ top: `${slotTop(slot)}rem` }}
+              >
                 {item.label}
               </li>
             );
