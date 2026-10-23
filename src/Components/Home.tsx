@@ -11,6 +11,8 @@ import './Home.css';
 import { observer } from 'mobx-react';
 import TopBar from './TopBar';
 import HomeMenu from './HomeMenu';
+import ConfirmDialog from './ConfirmDialog';
+import { ITimer } from './interfaces';
 import { countAllIntervals as countTotalInterval } from '../interval';
 
 const intervalWord = (count: number) => {
@@ -22,8 +24,26 @@ const intervalWord = (count: number) => {
 };
 
 class Home extends Component {
+    state: { pendingDelete: ITimer | null, deleteOpen: boolean } = {
+        pendingDelete: null,
+        deleteOpen: false,
+    };
+
+    closeDeleteDialog = () => {
+        this.setState({ deleteOpen: false });
+    };
+
+    confirmDelete = () => {
+        const timer = this.state.pendingDelete;
+        if (timer) {
+            timersStore.delete(timer.key);
+        }
+        this.closeDeleteDialog();
+    };
+
     render() {
         const timers = timersStore.timers;
+        const { pendingDelete, deleteOpen } = this.state;
 
         return (
             <div className="Home">
@@ -67,7 +87,7 @@ class Home extends Component {
                                             </IconButton>
                                             <IconButton
                                                 className="timer-card-delete"
-                                                onClick={() => { timersStore.delete(timer.key) }}
+                                                onClick={() => { this.setState({ pendingDelete: timer, deleteOpen: true }) }}
                                                 aria-label="Удалить"
                                             >
                                                 <DeleteIcon />
@@ -83,6 +103,24 @@ class Home extends Component {
                         Создать таймер
                     </Link>
                 </div>
+                <ConfirmDialog
+                    open={deleteOpen}
+                    title="Удалить таймер?"
+                    onClose={this.closeDeleteDialog}
+                    actions={[
+                        { label: 'Отмена', onClick: this.closeDeleteDialog },
+                        {
+                            label: 'Удалить',
+                            color: 'error',
+                            variant: 'contained',
+                            onClick: this.confirmDelete,
+                        },
+                    ]}
+                >
+                    <p>
+                        «{pendingDelete?.name || 'Без названия'}» будет удалён с этого устройства.
+                    </p>
+                </ConfirmDialog>
             </div>
         )
     }

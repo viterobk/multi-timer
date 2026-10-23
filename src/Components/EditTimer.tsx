@@ -5,13 +5,15 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/DeleteOutline';
 import AddIcon from '@mui/icons-material/Add';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import timersStore from "../Stores/timersStore";
 import './EditTimer.css';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { ITimer } from './interfaces';
 import TopBar from './TopBar';
 import TimeInterval, { IInterval } from './TimeInterval';
+import ConfirmDialog from './ConfirmDialog';
+import { timersHaveSameConfig } from '../shareLink';
 
 const addInterval = (timer: ITimer, interval: IInterval) => {
   timer.intervals.push(interval);
@@ -21,43 +23,62 @@ const deleteInterval = (timer: ITimer, index: number) => {
   timer.intervals.splice(index, 1);
   return timer;
 }
-const areTimersEqual = (oldTimer: ITimer | undefined, newTimer: ITimer): boolean => {
-  if (!oldTimer) return false;
-  if (oldTimer.name !== newTimer.name) return false;
-  if ((oldTimer.description || '') !== (newTimer.description || '')) return false;
-  if (oldTimer.intervals.length !== newTimer.intervals.length) return false;
-  return !oldTimer.intervals
-    .map((interval, index) => interval === newTimer.intervals[index])
-    .some(e => !e);
-}
+const emptyTimer = (key: number): ITimer => ({
+  key,
+  name: '',
+  description: '',
+  intervals: [],
+});
+
+const copyTimer = (source: ITimer): ITimer => ({
+  ...source,
+  description: source.description || '',
+  intervals: source.intervals.map((interval) => ({ ...interval })),
+});
+
+const isDraftUnchanged = (key: number, draft: ITimer): boolean => {
+  const original = timersStore.timers.find((timer) => timer.key === key) || emptyTimer(key);
+  return timersHaveSameConfig(original, draft);
+};
 
 export default function (props) {
   const { key: keyStr } = useParams();
   const key = !keyStr
     ? -1
     : Number.parseInt(keyStr);
-  const [timerState, setTimerState] = useState(timersStore.timers.find(timer => timer.key === key)
-    || {
-    key,
-    intervals: [],
-    name: '',
-    description: '',
-  });
-  const timer: ITimer = {
-    ...timerState,
-    intervals: [...timerState.intervals],
+  const navigate = useNavigate();
+  const draftRef = useRef<ITimer | null>(null);
+  if (!draftRef.current) {
+    const found = timersStore.timers.find((item) => item.key === key);
+    draftRef.current = copyTimer(found || emptyTimer(key));
+  }
+  const timer = draftRef.current;
+  const [, setVersion] = useState(0);
+  const [leaveOpen, setLeaveOpen] = useState(false);
+  const rerender = () => setVersion((value) => value + 1);
+
+  const closeLeaveDialog = () => setLeaveOpen(false);
+
+  const beforeNavigateBack = (event: { cancel: boolean }) => {
+    if (isDraftUnchanged(key, timer)) {
+      return;
+    }
+    event.cancel = true;
+    setLeaveOpen(true);
   };
 
-  const beforeNavigateBack = () => {
-    const newTimer = timer;
-    const oldTimer = timersStore.timers.find(timer => timer.key === key);
-    if (areTimersEqual(oldTimer, newTimer)) return;
-
-    if (window.confirm('Сохранить изменения?')) submitChanges();
-  }
   const submitChanges = () => {
     props.onUpdate && props.onUpdate(timer);
-  }
+  };
+
+  const saveAndLeave = () => {
+    submitChanges();
+    navigate('/');
+  };
+
+  const discardAndLeave = () => {
+    navigate('/');
+  };
 
   const generateIntervalItems = () => {
     return timer.intervals.map((interval, index) => {
@@ -72,7 +93,7 @@ export default function (props) {
             <IconButton
               className="interval-card-delete"
               aria-label="Удалить интервал"
-              onClick={() => { setTimerState(deleteInterval(timer, index)) }}>
+              onClick={() => { deleteInterval(timer, index); rerender(); }}>
               <DeleteIcon />
             </IconButton>
           </div>
@@ -116,12 +137,24 @@ export default function (props) {
         </div>
         <Button
           className="Edit-add"
-          onClick={() => { setTimerState(addInterval(timer, { duration: 0, description: '' })) }}
+          onClick={() => { addInterval(timer, { duration: 0, description: '' }); rerender(); }}
           startIcon={<AddIcon />}
         >
           Добавить интервал
         </Button>
       </div>
+      <ConfirmDialog
+        open={leaveOpen}
+        title="Сохранить изменения?"
+        onClose={closeLeaveDialog}
+        actions={[
+          { label: 'Отмена', onClick: closeLeaveDialog },
+          { label: 'Сбросить', onClick: discardAndLeave },
+          { label: 'Сохранить', variant: 'contained', onClick: saveAndLeave },
+        ]}
+      >
+        <p>Настройки таймера изменены. Можно сохранить их или выйти без сохранения.</p>
+      </ConfirmDialog>
     </div>
   )
 }

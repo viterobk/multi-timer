@@ -1,0 +1,33 @@
+.ConfirmDialog .MuiPaper-root {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow);
+}
+
+.ConfirmDialog .MuiDialogTitle-root {
+  padding-bottom: 8px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.ConfirmDialog-body {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.ConfirmDialog-body p {
+  margin: 0;
+}
+
+.ConfirmDialog-actions {
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 8px 16px 16px !important;
+}
+
+.ConfirmDialog-actions .MuiButton-root {
+  margin: 0 !important;
+}
