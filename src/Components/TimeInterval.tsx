@@ -49,34 +49,40 @@ export default class TimeInterval extends Component<{ value: IInterval, onChange
       this.setState({ description });
     }
     return (
-      <div className='TimeInterval'>
+      <div className="TimeInterval">
         <TextField
-          className='TimeInterval-textfield TimeInterval-textfield-fullwidth'
-          type='text'
-          size='small'
-          label='Описание'
+          className="TimeInterval-desc"
+          type="text"
+          size="small"
+          label="Описание"
+          placeholder="Разминка, работа, отдых…"
           defaultValue={this.state.description}
           onBlur={onDescriptionChanged}
           onFocus={(e) => { e.target.select() }}
         />
-        <TextField
-          type={'numeric'}
-          className='TimeInterval-textfield TimeInterval-textfield-narrow'
-          label='минуты'
-          size='small'
-          defaultValue={this.state.min}
-          onBlur={onMinChanged}
-          onFocus={(e) => { e.target.select() }}
-        />
-        <TextField
-          type='numeric'
-          className='TimeInterval-textfield TimeInterval-textfield-narrow'
-          label='секунды'
-          size='small'
-          defaultValue={this.state.sec}
-          onBlur={onSecChanged}
-          onFocus={(e) => { e.target.select() }}
-        />
+        <div className="TimeInterval-time">
+          <TextField
+            type="text"
+            inputMode="numeric"
+            className="TimeInterval-num"
+            label="Мин"
+            size="small"
+            defaultValue={this.state.min}
+            onBlur={onMinChanged}
+            onFocus={(e) => { e.target.select() }}
+          />
+          <span className="TimeInterval-colon" aria-hidden>:</span>
+          <TextField
+            type="text"
+            inputMode="numeric"
+            className="TimeInterval-num"
+            label="Сек"
+            size="small"
+            defaultValue={this.state.sec}
+            onBlur={onSecChanged}
+            onFocus={(e) => { e.target.select() }}
+          />
+        </div>
       </div>
     )
   }

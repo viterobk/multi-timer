@@ -1,16 +1,141 @@
-.Home .Home-timeritem {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    min-width: 0;
+.Home {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
-.Home .Home-listitem-doublepadding {
-    padding-right: 96px;
+.Home-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.Home .Home-fab {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
+.timer-card {
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.timer-card-main {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  flex: 1;
+  padding: 16px 8px 16px 18px;
+  text-align: left;
+}
+
+.timer-card-copy {
+  min-width: 0;
+  flex: 1;
+}
+
+.timer-card-copy h2 {
+  margin: 0;
+  font-size: 1.12rem;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.timer-card-copy p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.timer-card-play {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+
+.timer-card-play svg {
+  font-size: 26px;
+}
+
+.timer-card-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8px 8px 8px 0;
+}
+
+.timer-card-actions .MuiIconButton-root {
+  color: var(--muted);
+}
+
+.timer-card-delete:hover {
+  color: var(--danger) !important;
+  background: var(--danger-dim) !important;
+}
+
+.Home-empty {
+  margin: 28px 0 8px;
+  padding: 36px 20px;
+  text-align: center;
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+}
+
+.Home-empty-icon {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  border-radius: 20px;
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+
+.Home-empty-icon svg {
+  font-size: 32px;
+}
+
+.Home-empty h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  letter-spacing: -0.03em;
+}
+
+.Home-empty p {
+  margin: 8px auto 0;
+  max-width: 280px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.Home-create {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 52px;
+  margin-top: 4px;
+  padding: 12px 18px;
+  border-radius: 16px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #042f2e;
+  background: linear-gradient(180deg, #7ef0d8 0%, var(--accent-strong) 100%);
+  box-shadow: 0 10px 24px rgba(45, 212, 191, 0.22);
+}
+
+.Home-create:active {
+  transform: translateY(1px);
 }

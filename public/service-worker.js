@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-globals */
 
-const CACHE_NAME = 'multi-timer-cache-v2';
+const CACHE_NAME = 'multi-timer-cache-v3';
 const APP_SHELL = [
   './',
   './index.html',
@@ -10,8 +10,7 @@ const APP_SHELL = [
   './logo512.png',
 ];
 const FONT_CSS_URLS = [
-  'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap',
-  'https://fonts.googleapis.com/icon?family=Material+Icons',
+  'https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap',
 ];
 const FONT_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com'];
 const PASSTHROUGH_HOSTS = ['time100.ru'];

@@ -1,27 +1,75 @@
-.Edit .Edit-name {
-  min-width: 100%;
-  padding: 8px;
-  margin-top: 16px;
-}
-
-.Edit .Edit-list {
-  padding-bottom: 60px;
-}
-
-.Edit .Edit-fab {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-}
-
-.Edit .Edit-listitem {
-  display: block;
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
-.Edit .Edit-cardcontent {
+.Edit {
   display: flex;
-  justify-content: space-between;
-  gap: 16px;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.Edit-name {
+  width: 100%;
+}
+
+.Edit-hint {
+  margin: 4px 2px 0;
+  color: var(--muted);
+  text-align: left;
+  line-height: 1.45;
+}
+
+.Edit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.interval-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 14px 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  text-align: left;
+}
+
+.interval-card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.interval-card-index {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  color: var(--accent);
+  background: var(--accent-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.interval-card-delete {
+  margin-left: auto !important;
+  color: var(--muted) !important;
+}
+
+.interval-card-delete:hover {
+  color: var(--danger) !important;
+  background: var(--danger-dim) !important;
+}
+
+.Edit-add {
+  width: 100%;
+  min-height: 52px;
+  color: var(--accent) !important;
+  border: 1px dashed color-mix(in srgb, var(--accent) 45%, transparent) !important;
+  background: var(--accent-dim) !important;
 }

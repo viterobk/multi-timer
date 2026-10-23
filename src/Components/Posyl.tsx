@@ -1,14 +1,10 @@
-import {
-  Typography,
-  IconButton,
-} from '@mui/material';
 import TopBar from './TopBar';
 import './Posyl.css';
 import { beep1 as base64beep } from '../Sounds';
-import { createRef, useState, useEffect, useRef } from 'react';
+import { createRef, useState, useEffect } from 'react';
 import Time from '../Time';
-import VolumeOffIcon from '@mui/icons-material/VolumeOff';
-import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import VolumeOffIcon from '@mui/icons-material/VolumeOffRounded';
+import VolumeUpIcon from '@mui/icons-material/VolumeUpRounded';
 
 const getTimeString = (time) => {
   const hPrefix = time.hours < 10 ? '0' : '';
@@ -22,34 +18,15 @@ let currentAudioElement: HTMLAudioElement | null = null;
 const Posyl = () => {
   const beepRef = createRef<HTMLAudioElement>();
   const [ currentTime, setCurrentTime ] = useState(time.getTime());
-
-  const generateSoundButton = () => {
-    if (currentAudioElement) {
-      return <>
-        <IconButton
-          className='Posyl-icons'
-          onClick={toggleSound}
-        >
-          <VolumeUpIcon style={{ color: '#00AA00'}}/>
-        </IconButton>
-      </>
-    }
-    return <>
-        <IconButton
-          className='Posyl-icons'
-          onClick={toggleSound}
-        >
-          <VolumeOffIcon style={{ color: '#AA0000'}} />
-        </IconButton>
-        <Typography variant='h4'>Звук выключен!</Typography>
-      </>
-  }
+  const [ soundOn, setSoundOn ] = useState(false);
 
   const toggleSound = () => {
-    if (!currentAudioElement) {
+    if (!soundOn) {
       currentAudioElement = beepRef.current;
+      setSoundOn(true);
     } else {
       currentAudioElement = null;
+      setSoundOn(false);
     }
   }
 
@@ -94,12 +71,26 @@ const Posyl = () => {
     }
   }, [])
 
-  return <div className='Posyl'>
-    <TopBar/>
-    <Typography variant='h1'>{ getTimeString(currentTime) }</Typography>
-    {generateSoundButton()}
-    <audio ref={beepRef} src={base64beep} />
-  </div>
+  return (
+    <div className="Posyl">
+      <TopBar title="Посыл" backPath="/" />
+      <div className="page Posyl-page">
+        <p className="Posyl-kicker">Текущее время</p>
+        <div className="Posyl-clock">{ getTimeString(currentTime) }</div>
+        <button
+          type="button"
+          className={`Posyl-sound ${soundOn ? 'is-on' : 'is-off'}`}
+          onClick={toggleSound}
+        >
+          <span className="Posyl-sound-icon">
+            {soundOn ? <VolumeUpIcon /> : <VolumeOffIcon />}
+          </span>
+          <span>{soundOn ? 'Звук включён' : 'Звук выключен'}</span>
+        </button>
+        <audio ref={beepRef} src={base64beep} />
+      </div>
+    </div>
+  )
 }
 
 export default Posyl;

@@ -4,7 +4,8 @@ import './index.css';
 import App from './Components/App';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserHistory } from 'history';
-import { CssBaseline, ThemeProvider } from '@material-ui/core';
+import { CssBaseline } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 
 const history = createBrowserHistory();

@@ -2,17 +2,8 @@ import {
   TextField,
   Button,
   IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemSecondaryAction,
-  ListItemText,
-  Card,
-  CardContent,
-  CardHeader,
-  Typography,
 } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from '@mui/icons-material/DeleteOutline';
 import AddIcon from '@mui/icons-material/Add';
 import { useParams } from "react-router-dom";
 import timersStore from "../Stores/timersStore";
@@ -67,45 +58,58 @@ export default function (props) {
   }
 
   const generateIntervalItems = () => {
-    const intervals = timer.intervals.map((interval, index) => {
+    return timer.intervals.map((interval, index) => {
       const updateIntervalValue = (value: IInterval) => {
         timer.intervals[index] = value;
       }
       return (
-        <ListItem key={index} className='Edit-listitem'>
-          <Card>
-            <CardContent className='Edit-cardcontent'>
-              <TimeInterval value={interval} onChange={updateIntervalValue}/>
-              <IconButton
-                onClick={() => { setTimerState(deleteInterval(timer, index)) }}>
-                <DeleteIcon></DeleteIcon>
-              </IconButton>
-            </CardContent>
-          </Card>
-        </ListItem>
+        <article key={index} className="interval-card">
+          <div className="interval-card-head">
+            <span className="interval-card-index">{index + 1}</span>
+            <span>Интервал</span>
+            <IconButton
+              className="interval-card-delete"
+              aria-label="Удалить интервал"
+              onClick={() => { setTimerState(deleteInterval(timer, index)) }}>
+              <DeleteIcon />
+            </IconButton>
+          </div>
+          <TimeInterval value={interval} onChange={updateIntervalValue}/>
+        </article>
       )
     });
-    intervals.push(<ListItem key={-1}>
-      <Button onClick={() => { setTimerState(addInterval(timer, { duration: 0, description: '' })) }}>
-        <AddIcon />
-        <ListItemText
-          primary={"Добавить интервал"} />
-      </Button>
-    </ListItem>);
-    return intervals;
   };
+
   return (
-    <div className='Edit'>
-      <TopBar backPath='/' onOkClick={submitChanges} onBackClick={beforeNavigateBack} />
-      <TextField
-        autoFocus
-        className='Edit-name'
-        label='Название таймера'
-        defaultValue={timer.name}
-        onChange={(e) => { timer.name = e.target.value }} />
-      <List className='Edit-list'>
-        {generateIntervalItems()}
-      </List>
+    <div className="Edit">
+      <TopBar
+        title={key < 0 ? 'Новый таймер' : 'Редактирование'}
+        backPath="/"
+        onOkClick={submitChanges}
+        onBackClick={beforeNavigateBack}
+      />
+      <div className="page">
+        <TextField
+          autoFocus
+          className="Edit-name"
+          label="Название таймера"
+          defaultValue={timer.name}
+          onChange={(e) => { timer.name = e.target.value }}
+        />
+        <div className="Edit-list">
+          {timer.intervals.length === 0 && (
+            <p className="Edit-hint">Добавьте хотя бы один интервал — работу, отдых или паузу.</p>
+          )}
+          {generateIntervalItems()}
+        </div>
+        <Button
+          className="Edit-add"
+          onClick={() => { setTimerState(addInterval(timer, { duration: 0, description: '' })) }}
+          startIcon={<AddIcon />}
+        >
+          Добавить интервал
+        </Button>
+      </div>
     </div>
   )
 }

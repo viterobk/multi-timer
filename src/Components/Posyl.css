@@ -1,23 +1,66 @@
-.Posyl .Posyl-icons svg {
-  font-size: 110px;
-}
-
-.Posyl .Posyl-outerbox {
-  position: relative;
-  display: inline-flex;
-}
-
-.Posyl .Posyl-innerbox {
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  position: absolute;
+.Posyl {
   display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.Posyl-page {
   align-items: center;
   justify-content: center;
+  padding-bottom: 64px;
 }
 
-.Posyl video {
-  position: fixed;
+.Posyl-kicker {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.Posyl-clock {
+  margin: 8px 0 28px;
+  font-size: clamp(3.4rem, 16vw, 5.4rem);
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  font-variant-numeric: tabular-nums;
+  line-height: 0.95;
+}
+
+.Posyl-sound {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 8px 18px 8px 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--text);
+  background: var(--surface);
+  font: inherit;
+  cursor: pointer;
+}
+
+.Posyl-sound-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--danger-dim);
+  color: var(--danger);
+}
+
+.Posyl-sound.is-on .Posyl-sound-icon {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
+.Posyl-sound span {
+  font-size: 1rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
 }

@@ -1,33 +1,192 @@
-.Run .Run-runicons svg {
-    font-size: 110px;
+.Run {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
-.Run .Run-outerbox {
-    position: relative;
-    display: inline-flex;
+.Run-page {
+  align-items: center;
 }
 
-.Run .Run-innerbox {
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.Run-heading {
+  width: 100%;
+  text-align: center;
 }
 
-.Run .Run-restintervals {
-  border-top: 1px solid #BBB;
-  padding-top: 15px;
-  color: #BBB
+.Run-kicker {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
-.Run .Run-restintervals>* {
-  margin-bottom: 15px;
+.Run-name {
+  margin: 6px 0 0;
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
 }
 
-.Run .time-color{
-  color: #1976d2;
+.Run-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.Run-rings {
+  position: relative;
+  width: 220px;
+  height: 220px;
+}
+
+.Run-rings .MuiCircularProgress-root {
+  position: absolute;
+  inset: 0;
+  color: var(--accent);
+}
+
+.Run-track {
+  color: rgba(244, 247, 251, 0.08) !important;
+}
+
+.Run-track-inner {
+  inset: 22px !important;
+  width: 176px !important;
+  height: 176px !important;
+}
+
+.Run-total {
+  color: color-mix(in srgb, var(--accent) 45%, white) !important;
+}
+
+.Run-interval {
+  inset: 22px !important;
+  width: 176px !important;
+  height: 176px !important;
+  color: var(--accent) !important;
+}
+
+.Run-rings .MuiCircularProgress-circle {
+  stroke-linecap: round;
+}
+
+.Run-center {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.Run-toggle {
+  width: 92px !important;
+  height: 92px !important;
+  border-radius: 50% !important;
+  background: var(--surface) !important;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--line) !important;
+}
+
+.Run-toggle svg {
+  font-size: 52px;
+}
+
+.Run-toggle.is-play {
+  color: var(--accent) !important;
+  background: var(--accent-dim) !important;
+}
+
+.Run-toggle.is-play svg {
+  margin-left: 3px;
+}
+
+.Run-toggle.is-pause {
+  color: var(--danger) !important;
+  background: var(--danger-dim) !important;
+}
+
+.Run.is-running .Run-interval {
+  filter: drop-shadow(0 0 12px rgba(94, 234, 212, 0.35));
+}
+
+.Run-current {
+  text-align: center;
+}
+
+.Run-clock {
+  font-size: 3.4rem;
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.Run-caption {
+  margin: 14px 0 4px;
+  max-width: 18ch;
+  color: var(--text);
+  font-size: clamp(1.55rem, 5.5vw, 2.1rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+}
+
+.Run-caption.muted {
+  max-width: none;
+  color: var(--muted);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.Run-reset {
+  color: var(--muted) !important;
+}
+
+.Run-upcoming {
+  width: 100%;
+  padding: 16px 18px 8px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  text-align: left;
+}
+
+.Run-upcoming h2 {
+  margin: 0 0 10px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.Run-upcoming ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.Run-upcoming li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+}
+
+.Run-upcoming li span {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.Run-upcoming li strong {
+  color: var(--muted);
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
 }
