@@ -63,7 +63,7 @@
 .MarkdownContent code {
   padding: 0.1em 0.35em;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--code-bg);
   font-size: 0.9em;
 }
 
@@ -71,7 +71,7 @@
   padding: 10px 12px;
   overflow-x: auto;
   border-radius: 12px;
-  background: rgba(0, 0, 0, 0.28);
+  background: var(--code-block);
 }
 
 .MarkdownContent pre code {

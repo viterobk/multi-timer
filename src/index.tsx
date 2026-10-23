@@ -4,19 +4,16 @@ import './index.css';
 import App from './Components/App';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserHistory } from 'history';
-import { CssBaseline } from '@mui/material';
-import { ThemeProvider } from '@mui/material/styles';
-import theme from './theme';
+import { ThemeModeProvider } from './ThemeModeProvider';
 import { startBeepPlayer } from './Sounds/beepPlayer';
 
 const history = createBrowserHistory();
 startBeepPlayer();
 
 ReactDOM.render(
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
+    <ThemeModeProvider>
       <App />
-    </ThemeProvider>,
+    </ThemeModeProvider>,
   document.getElementById('root')
 );
 

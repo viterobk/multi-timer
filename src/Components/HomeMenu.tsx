@@ -1,10 +1,12 @@
 import { ChangeEvent, useRef, useState } from 'react';
-import { IconButton, Menu, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
+import { Divider, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Switch } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
+import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import { observer } from 'mobx-react';
 import timersStore, { ITimerData, parseTimersJson, serializeTimers } from '../Stores/timersStore';
+import { useThemeMode } from '../ThemeModeProvider';
 import TimerSelectDialog from './TimerSelectDialog';
 
 const downloadTimersJson = (timers: ITimerData[]) => {
@@ -21,6 +23,7 @@ const downloadTimersJson = (timers: ITimerData[]) => {
 };
 
 const HomeMenu = observer(() => {
+  const { mode, setMode } = useThemeMode();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const [exportOpen, setExportOpen] = useState(false);
@@ -93,7 +96,7 @@ const HomeMenu = observer(() => {
         onClose={closeMenu}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{ sx: { minWidth: 240, mt: 0.75 } }}
+        PaperProps={{ sx: { minWidth: 280, mt: 0.75 } }}
       >
         <MenuItem onClick={openImportPicker}>
           <ListItemIcon>
@@ -106,6 +109,25 @@ const HomeMenu = observer(() => {
             <FileDownloadOutlinedIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText>Экспорт таймеров</ListItemText>
+        </MenuItem>
+        <Divider sx={{ my: 0.5 }} />
+        <MenuItem
+          component="div"
+          disableRipple
+          sx={{ py: 0.75 }}
+          onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}
+        >
+          <ListItemIcon>
+            <LightModeOutlinedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText id="theme-switch-label">Светлая тема</ListItemText>
+          <Switch
+            edge="end"
+            checked={mode === 'light'}
+            onClick={(event) => event.stopPropagation()}
+            onChange={(_, checked) => setMode(checked ? 'light' : 'dark')}
+            inputProps={{ 'aria-labelledby': 'theme-switch-label' }}
+          />
         </MenuItem>
       </Menu>
       <input

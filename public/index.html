@@ -6,6 +6,20 @@
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#10141c" />
+    <script>
+      (function () {
+        try {
+          var mode = localStorage.getItem('multi-timer-theme');
+          if (mode !== 'light' && mode !== 'dark') return;
+          document.documentElement.setAttribute('data-theme', mode);
+          document.documentElement.style.colorScheme = mode;
+          if (mode === 'light') {
+            var meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.setAttribute('content', '#f3f6fa');
+          }
+        } catch (e) {}
+      })();
+    </script>
     <meta
       name="description"
       content="Web site created using create-react-app"

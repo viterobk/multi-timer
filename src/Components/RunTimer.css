@@ -1,5 +1,4 @@
 .Run {
-  --run-total: #7dd3fc;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -49,7 +48,7 @@
 }
 
 .Run-notes-dialog .MuiBackdrop-root {
-  background: rgba(8, 10, 14, 0.72);
+  background: var(--overlay);
 }
 
 .Run-notes-dialog .MuiPaper-root {
@@ -95,7 +94,7 @@
 }
 
 .Run-track {
-  color: rgba(244, 247, 251, 0.08) !important;
+  color: var(--track) !important;
 }
 
 .Run-track-inner {
@@ -154,7 +153,7 @@
 }
 
 .Run.is-running .Run-interval {
-  filter: drop-shadow(0 0 12px rgba(94, 234, 212, 0.35));
+  filter: drop-shadow(0 0 12px var(--glow));
 }
 
 .Run-readout {
@@ -237,7 +236,7 @@
   right: 12%;
   top: 1.95rem;
   height: 1px;
-  background: rgba(244, 247, 251, 0.22);
+  background: var(--queue-line);
   pointer-events: none;
   z-index: 1;
 }
