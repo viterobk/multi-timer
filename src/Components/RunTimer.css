@@ -1,4 +1,5 @@
 .Run {
+  --run-total: #7dd3fc;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -10,21 +11,23 @@
 }
 
 .Run-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
   width: 100%;
   text-align: center;
 }
 
-.Run-kicker {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.86rem;
-  font-weight: 650;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.Run-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
 }
 
 .Run-name {
-  margin: 6px 0 0;
+  margin: 0;
   font-size: 1.45rem;
   font-weight: 700;
   letter-spacing: -0.04em;
@@ -32,7 +35,7 @@
 
 .Run-notes-toggle {
   appearance: none;
-  margin-top: 10px;
+  margin: 0;
   padding: 0;
   border: 0;
   background: none;
@@ -47,6 +50,13 @@
 .Run-notes-toggle:hover {
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+.Run-total-left {
+  margin: 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  color: var(--run-total);
 }
 
 .Run-notes-dialog .MuiBackdrop-root {
@@ -106,7 +116,7 @@
 }
 
 .Run-total {
-  color: color-mix(in srgb, var(--accent) 45%, white) !important;
+  color: var(--run-total) !important;
 }
 
 .Run-interval {
@@ -163,6 +173,7 @@
 }
 
 .Run-clock {
+  color: var(--accent);
   font-size: 3.4rem;
   font-weight: 700;
   letter-spacing: -0.06em;
@@ -170,10 +181,14 @@
   line-height: 1;
 }
 
+.Run-clock.Run-total-left {
+  color: var(--run-total);
+}
+
 .Run-caption {
   margin: 14px 0 4px;
   max-width: 18ch;
-  color: var(--text);
+  color: var(--accent);
   font-size: clamp(1.55rem, 5.5vw, 2.1rem);
   font-weight: 700;
   letter-spacing: -0.04em;

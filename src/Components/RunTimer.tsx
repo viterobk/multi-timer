@@ -102,7 +102,7 @@ const RunTimer = () => {
   const [runState, setRunState] = useState({
     intervalPercent: timerState.timerRunner.getIntervalPercent(),
     totalPercent: timerState.timerRunner.getTotalPercent(),
-    text: timerState.timerRunner.getText(),
+    totalSecondsLeft: timerState.timerRunner.getSecondsLeft(),
     intervalSecondsLeft: timerState.timerRunner.getIntervalSecondsLeft(),
     restIntervals: timerState.timerRunner.getRestIntervals(),
     currentInterval: timerState.timerRunner.getCurrentInterval(),
@@ -112,7 +112,7 @@ const RunTimer = () => {
     setRunState({
       intervalPercent: timerInstance.getIntervalPercent(),
       totalPercent: timerInstance.getTotalPercent(),
-      text: timerInstance.getText(),
+      totalSecondsLeft: timerInstance.getSecondsLeft(),
       intervalSecondsLeft: timerInstance.getIntervalSecondsLeft(),
       restIntervals: timerInstance.getRestIntervals(),
       currentInterval: timerInstance.getCurrentInterval(),
@@ -198,36 +198,38 @@ const RunTimer = () => {
       />
       <div className="page Run-page">
         <div className="Run-heading">
-          <p className="Run-kicker">Всего {runState.text}</p>
-          <h2 className="Run-name">{timer.name || 'Без названия'}</h2>
-          {timerNotes && (
-            <>
-              <button
-                type="button"
-                className="Run-notes-toggle"
-                aria-haspopup="dialog"
-                aria-expanded={notesOpen}
-                onClick={() => setNotesOpen(true)}
-              >
-                Подробнее...
-              </button>
-              <Dialog
-                className="Run-notes-dialog"
-                open={notesOpen}
-                onClose={() => setNotesOpen(false)}
-                fullWidth
-                maxWidth="sm"
-              >
-                <DialogTitle>{timer.name || 'Описание'}</DialogTitle>
-                <DialogContent>
-                  <MarkdownContent>{timerNotes}</MarkdownContent>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={() => setNotesOpen(false)}>Закрыть</Button>
-                </DialogActions>
-              </Dialog>
-            </>
-          )}
+          <div className="Run-title">
+            <h2 className="Run-name">{timer.name || 'Без названия'}</h2>
+            {timerNotes && (
+              <>
+                <button
+                  type="button"
+                  className="Run-notes-toggle"
+                  aria-haspopup="dialog"
+                  aria-expanded={notesOpen}
+                  onClick={() => setNotesOpen(true)}
+                >
+                  Подробнее...
+                </button>
+                <Dialog
+                  className="Run-notes-dialog"
+                  open={notesOpen}
+                  onClose={() => setNotesOpen(false)}
+                  fullWidth
+                  maxWidth="sm"
+                >
+                  <DialogTitle>{timer.name || 'Описание'}</DialogTitle>
+                  <DialogContent>
+                    <MarkdownContent>{timerNotes}</MarkdownContent>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={() => setNotesOpen(false)}>Закрыть</Button>
+                  </DialogActions>
+                </Dialog>
+              </>
+            )}
+          </div>
+          <p className="Run-clock Run-total-left">{formatClock(runState.totalSecondsLeft)}</p>
         </div>
         <div className="Run-stage">
           <div className="Run-rings">
