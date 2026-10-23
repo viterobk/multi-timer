@@ -154,8 +154,21 @@ const RunTimer = () => {
   }
 
   const renderCurrentInterval = ({ description }) => (
-    <div className="Run-current">
-      <div className="Run-clock">{formatClock(runState.intervalSecondsLeft)}</div>
+    <div className="Run-readout">
+      <div className="Run-times">
+        <div className="Run-time is-total">
+          <span className="Run-time-label">общее</span>
+          <p className="Run-clock" aria-label="Оставшееся время таймера">
+            {formatClock(runState.totalSecondsLeft)}
+          </p>
+        </div>
+        <div className="Run-time is-interval">
+          <span className="Run-time-label">интервал</span>
+          <p className="Run-clock" aria-label="Оставшееся время интервала">
+            {formatClock(runState.intervalSecondsLeft)}
+          </p>
+        </div>
+      </div>
       {description
         ? <p className="Run-caption">{description}</p>
         : <p className="Run-caption muted">Текущий интервал</p>
@@ -229,7 +242,6 @@ const RunTimer = () => {
               </>
             )}
           </div>
-          <p className="Run-clock Run-total-left">{formatClock(runState.totalSecondsLeft)}</p>
         </div>
         <div className="Run-stage">
           <div className="Run-rings">
