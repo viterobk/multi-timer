@@ -224,7 +224,12 @@ const RunTimer = () => {
                 className={`Run-queue-item ${slotClass}`}
                 style={{ top: `${slotTop(slot)}rem` }}
               >
-                {item.label}
+                <span className="Run-queue-name">{item.label}</span>
+                {slot > 0 && (
+                  <span className="Run-queue-duration">
+                    {formatClock(item.interval.duration)}
+                  </span>
+                )}
               </li>
             );
           })}

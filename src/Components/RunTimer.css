@@ -245,6 +245,10 @@
   position: absolute;
   left: 0;
   right: 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 12px;
   margin: 0;
   color: var(--text);
   font-weight: 700;
@@ -252,12 +256,40 @@
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
   transition:
     top 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     opacity 0.45s ease,
     font-size 0.45s ease,
     line-height 0.45s ease;
+}
+
+.Run-queue-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Run-queue-duration {
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: 'tnum' 1, 'lnum' 1;
+}
+
+.Run-queue-item.is-slot-1,
+.Run-queue-item.is-slot-2,
+.Run-queue-item.is-slot-3,
+.Run-queue-item.is-slot-4,
+.Run-queue-item.is-slot-rest {
+  justify-content: space-between;
+  text-align: left;
+}
+
+.Run-queue-item.is-slot-1 .Run-queue-name,
+.Run-queue-item.is-slot-2 .Run-queue-name,
+.Run-queue-item.is-slot-3 .Run-queue-name,
+.Run-queue-item.is-slot-4 .Run-queue-name,
+.Run-queue-item.is-slot-rest .Run-queue-name {
+  flex: 1;
 }
 
 .Run-queue-item.is-slot-exit,
